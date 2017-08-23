@@ -139,9 +139,12 @@ int main()
 	float zMin = -0.5f;
 	float zMax = 0.5f;
 
+	bool onStep;
 
 	while (!glfwWindowShouldClose(window))
 	{
+		onStep = false;
+
 		float currentTime = (float)glfwGetTime();
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
@@ -182,12 +185,13 @@ int main()
 			if (p.x >= testMin.x && p.x <= testMax.x && p.z >= testMin.z && p.z <= testMax.z)
 			{
 				cam.pos.y = 0.2f + testMax.y;
-				std::cout << "jump\n";
+				onStep = true;
 			}
-			else
-			{
-				//cam.pos.y = 0.05f;
-			}
+	
+		}
+		if (!onStep)
+		{
+			cam.pos.y = 0.2f;
 		}
 
 		
