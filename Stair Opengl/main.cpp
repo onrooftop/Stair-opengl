@@ -28,7 +28,7 @@ float lastY = HEIGHT / 2.0f;
 bool firstmouse = true;
 
 
-Camera cam(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera cam(glm::vec3(0.0f, 0.05f, 3.0f));
 
 
 int main()
@@ -126,7 +126,18 @@ int main()
 
 	glEnable(GL_DEPTH_TEST);
 
-
+	glm::vec3 color[5];
+	for (int i = 0; i < 5; i++)
+	{
+		color[i] = glm::vec3(1.0f / i, 0.0f / i, 1.0f / i);
+	}
+	
+	float xMin = -0.5f;
+	float xMax = 0.5f;
+	float yMin = -0.5f;
+	float yMax = 0.5f;
+	float zMin = -0.5f;
+	float zMax = 0.5f;
 
 
 	while (!glfwWindowShouldClose(window))
@@ -145,15 +156,41 @@ int main()
 
 		proj = glm::perspective(glm::radians(cam.fov), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
 		view = cam.getView();
-		model = glm::mat4();
+		
 
 		myShader.setMat4("proj", proj);
 		myShader.setMat4("view", view);
-		myShader.setMat4("model", model);
+		
+		for (int i = 0; i < 5; i++)
+		{
+			model = glm::mat4();
+			model = glm::scale(model, glm::vec3(0.5f, 0.05f, 0.2f));
+			model = glm::translate(model, glm::vec3(0.0f, 1.0f * i, -0.5f * i));
+			myShader.setVec3("col", color[i]);
+			myShader.setMat4("model", model);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
 
+			glm::vec4 testMin, testMax;
+			testMin = glm::vec4(xMin, yMin, zMin, 1);
+			testMax = glm::vec4(xMax, yMax, zMax, 1);
 
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+			testMin = model * testMin;
+			testMax = model * testMax;
 
+			glm::vec3 p = cam.pos;
+
+			if (p.x >= testMin.x && p.x <= testMax.x && p.z >= testMin.z && p.z <= testMax.z)
+			{
+				cam.pos.y = 0.05 + testMax.y;
+				std::cout << "jump\n";
+			}
+			else
+			{
+				cam.pos.y = 0.05f;
+			}
+		}
+
+		
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

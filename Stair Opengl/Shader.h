@@ -26,6 +26,8 @@ public:
 
 	void setMat4(const char* name, glm::mat4 value);
 
+	void setVec3(const char* name, glm::vec3 value);
+
 
 
 };

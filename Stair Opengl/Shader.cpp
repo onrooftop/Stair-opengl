@@ -89,3 +89,8 @@ void Shader::setMat4(const char* name, glm::mat4 value)
 {
 	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, &value[0][0]);
 }
+
+void Shader::setVec3(const char * name, glm::vec3 value)
+{
+	glUniform3fv(glGetUniformLocation(ID, name), 1, &value[0]);
+}
