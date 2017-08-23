@@ -28,7 +28,7 @@ float lastY = HEIGHT / 2.0f;
 bool firstmouse = true;
 
 
-Camera cam(glm::vec3(0.0f, 0.05f, 3.0f));
+Camera cam(glm::vec3(0.0f, 0.2f, 0.0f));
 
 
 int main()
@@ -126,8 +126,8 @@ int main()
 
 	glEnable(GL_DEPTH_TEST);
 
-	glm::vec3 color[5];
-	for (int i = 0; i < 5; i++)
+	glm::vec3 color[10];
+	for (int i = 0; i < 10; i++)
 	{
 		color[i] = glm::vec3(1.0f / i, 0.0f / i, 1.0f / i);
 	}
@@ -161,7 +161,7 @@ int main()
 		myShader.setMat4("proj", proj);
 		myShader.setMat4("view", view);
 		
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			model = glm::mat4();
 			model = glm::scale(model, glm::vec3(0.5f, 0.05f, 0.2f));
@@ -181,12 +181,12 @@ int main()
 
 			if (p.x >= testMin.x && p.x <= testMax.x && p.z >= testMin.z && p.z <= testMax.z)
 			{
-				cam.pos.y = 0.05 + testMax.y;
+				cam.pos.y = 0.2f + testMax.y;
 				std::cout << "jump\n";
 			}
 			else
 			{
-				cam.pos.y = 0.05f;
+				//cam.pos.y = 0.05f;
 			}
 		}
 
