@@ -8,6 +8,10 @@
 #include <fstream>
 #include <sstream>
 
+
+#include <glm\glm\glm.hpp>
+#include <glm\glm\gtc\matrix_transform.hpp>
+
 class Shader
 {
 
@@ -19,6 +23,8 @@ public:
 	Shader(const char* vertexPath, const char* fragmentPath);
 
 	void use();
+
+	void setMat4(const char* name, glm::mat4 value);
 
 
 

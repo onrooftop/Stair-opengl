@@ -14,8 +14,9 @@ void Camera::update()
 	up = glm::normalize(glm::cross(right, front));
 }
 
-Camera::Camera(glm::vec3 _pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 _up = glm::vec3(0.0f, 1.0f, 0.0f), float _yaw = YAW, float _pitch = PITCH):
-	front(glm::vec3(0.0f, 0.0f, -1.0f)), move_speed(MOVE_SPEED), mouse_sensitivity(MOUSE_SENSITIVITY), world_up(glm::vec3(0.0f, 1.0f, 0.0f))
+Camera::Camera(glm::vec3 _pos, glm::vec3 _up, float _yaw, float _pitch, bool fly) :
+	front(glm::vec3(0.0f, 0.0f, -1.0f)), move_speed(MOVE_SPEED), mouse_sensitivity(MOUSE_SENSITIVITY),
+	world_up(glm::vec3(0.0f, 1.0f, 0.0f)), fov(FOV)
 {
 	pos = _pos;
 	up = _up;
@@ -24,7 +25,7 @@ Camera::Camera(glm::vec3 _pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 _up = glm
 	update();
 }
 
-void Camera::move(Camera_Movement move, bool fly = false,float deltaTime)
+void Camera::keyboard_move(Camera_Movement move, float deltaTime)
 {
 	float y;
 	if (!fly)
@@ -56,4 +57,35 @@ void Camera::move(Camera_Movement move, bool fly = false,float deltaTime)
 		pos.y = y;
 	}
 	
+}
+
+void Camera::mouse_move(float xoffset, float yoffset)
+{
+	xoffset *= mouse_sensitivity;
+	yoffset *= mouse_sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	update();
+}
+
+void Camera::mouse_scroll(float yoffset)
+{
+	if (fov >= 1.0f && fov <= 45.0f)
+		fov -= yoffset;
+	if (fov <= 1.0f)
+		fov = 1.0f;
+	if (fov >= 45.0f)
+		fov = 45.0f;
+}
+
+glm::mat4 Camera::getView()
+{
+	return glm::lookAt(pos, pos + front, up);
 }
