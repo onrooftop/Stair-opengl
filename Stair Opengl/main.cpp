@@ -7,6 +7,9 @@
 #include <GLFW\glfw3.h>
 
 
+void processInput(GLFWwindow *window);
+void framebuffer_size_callback(GLFWwindow *window, int w, int h);
+
 const int WIDTH = 800;
 const int HEIGHT = 600;
 
@@ -30,6 +33,7 @@ int main()
 	}
 
 	glfwMakeContextCurrent(window);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -41,6 +45,8 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
+		processInput(window);
+
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -53,4 +59,17 @@ int main()
 
 	glfwTerminate();
 	return 0;
+}
+
+void processInput(GLFWwindow *window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(window, true);
+	}
+}
+
+void framebuffer_size_callback(GLFWwindow *window, int w, int h)
+{
+	glViewport(0, 0, w, h);
 }
