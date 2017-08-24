@@ -137,6 +137,7 @@ int main()
 
 
 	glEnable(GL_DEPTH_TEST);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glm::vec3 color[30];
 	for (int i = 0; i < 30; i++)
@@ -184,11 +185,11 @@ int main()
 		for (int i = 0; i < 30; i++)
 		{
 			model = glm::mat4();
-		//	model = glm::rotate(model, glm::radians(45.0f * 1), glm::vec3(0.0f, 1.0f, 0.0f));
+			//model = glm::rotate(model, glm::radians(5.0f * i), glm::vec3(0.0f, 1.0f, 0.0f));
 
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, -0.2f * i));
+			model = glm::translate(model, glm::vec3(0.0f, 0.0f, -0.3f * i));
 
-			model = glm::scale(model, glm::vec3(w, h*(i+1), 0.2f));
+			model = glm::scale(model, glm::vec3(w, h*(i+1), 0.3f));
 
 			model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
 
@@ -196,6 +197,9 @@ int main()
 			myShader.setMat4("model", model);
 		
 
+
+			view = cam.getView();
+			myShader.setMat4("view", view);
 			
 
 			temp = model * vertices[0];
@@ -228,7 +232,7 @@ int main()
 			}
 
 			//std::cout << testMax.z << testMin.z << '\n';
-			std::cout << feet << '\n';
+			//std::cout << feet << '\n';
 			
 
 			if ((cam.pos.x >= testMin.x && cam.pos.x <= testMax.x) &&
@@ -238,14 +242,11 @@ int main()
 				feet = testMax.y;
 				cam.pos.y = 0.3f + feet;
 				onStep = true;
-				std::cout << i << '\n';
+				//std::cout << i << '\n';
 
 
 			}
-			if (i == 5)
-			{
-				std::cout << testMax.y << std::endl;
-			}
+
 
 
 			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
@@ -259,11 +260,8 @@ int main()
 			//std::cout << '\n';
 		}
 
-
-		view = cam.getView();
-		myShader.setMat4("view", view);
 		
-		glDisable(GL_DEPTH_TEST);
+	/*	glDisable(GL_DEPTH_TEST);
 
 		model = glm::mat4();
 		model = glm::translate(model, glm::vec3(cam.pos.x, 0.0f, cam.pos.z));
@@ -272,13 +270,8 @@ int main()
 		myShader.setVec3("col", glm::vec3(0.0f));
 		glPointSize(3.0f);
 		glDrawElements(GL_POINTS, 1, GL_UNSIGNED_INT, 0);
-
-	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
-
-	
-
 		glEnable(GL_DEPTH_TEST);
-
+*/
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
