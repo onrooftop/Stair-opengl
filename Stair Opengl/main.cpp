@@ -137,7 +137,7 @@ int main()
 
 
 	glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glm::vec3 color[30];
 	for (int i = 0; i < 30; i++)
