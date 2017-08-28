@@ -14,10 +14,11 @@ void Camera::update()
 	up = glm::normalize(glm::cross(right, front));
 }
 
-Camera::Camera(glm::vec3 _pos, glm::vec3 _up, float _yaw, float _pitch, bool fly) :
+Camera::Camera(glm::vec3 _pos, glm::vec3 _up, float _yaw, float _pitch, bool _fly) :
 	front(glm::vec3(0.0f, 0.0f, -1.0f)), move_speed(MOVE_SPEED), mouse_sensitivity(MOUSE_SENSITIVITY),
 	world_up(glm::vec3(0.0f, 1.0f, 0.0f)), fov(FOV)
 {
+	fly = _fly;
 	pos = _pos;
 	up = _up;
 	yaw = _yaw;

@@ -43,5 +43,11 @@
     <None Include="fshader.frag">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="lightvertex.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="lightfrag.frag">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

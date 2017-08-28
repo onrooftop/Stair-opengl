@@ -81,6 +81,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -128,6 +129,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="fshader.frag" />
+    <None Include="lightfrag.frag" />
+    <None Include="lightvertex.vert" />
     <None Include="vshader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
