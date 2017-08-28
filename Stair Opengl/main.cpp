@@ -26,7 +26,6 @@ float deltaTime = 0.0;
 float lastTime = 0.0;
 float lastX = WIDTH / 2.0f;
 float lastY = HEIGHT / 2.0f;
-float feet = 0.0f;
 
 
 
@@ -36,7 +35,7 @@ bool firstmouse = true;
 
 
 
-Camera cam(glm::vec3(0.0f, feet + 0.3f, 2.0f));
+Camera cam(glm::vec3(0.0f, 0.0f, 3.0f));
 
 
 int main()
@@ -159,118 +158,34 @@ int main()
 
 		processInput(window);
 
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		myShader.use();
 		glBindVertexArray(VAO);
 
-		proj = glm::perspective(glm::radians(cam.fov), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
-	
-		
 
+
+		proj = glm::perspective(glm::radians(cam.fov), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
 		myShader.setMat4("proj", proj);
+
+
 		view = cam.getView();
 		myShader.setMat4("view", view);
 
 
-		float w = 0.5f;
-		float h = 0.075f;
 
-		glm::vec4 testMin, testMax, temp;
-
-
-		for (int i = 0; i < 100; i++)
-		{
-			model = glm::mat4();
-			model = glm::rotate(model, glm::radians(10.0f * i), glm::vec3(0.0f, 1.0f, 0.0f));
-
-			model = glm::translate(model, glm::vec3(0.0f, h * i, 1.0f));
-
-			model = glm::scale(model, glm::vec3(w, h, 0.3f));
-
-			model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
-
-			myShader.setVec3("col", color[i % 2]);
-
-			myShader.setMat4("model", model);
-		
-
-			glm::vec4 temp2[8];
-
-			for (int j = 0; j < 8; j++)
-			{
-				temp2[j] = model * vertices[j];
-			}
-
-			glm::vec3 p0 = glm::vec3(temp2[0].x, temp2[0].y, temp2[0].z);
-			glm::vec3 p3 = glm::vec3(temp2[3].x, temp2[3].y, temp2[3].z);
-			glm::vec3 p4 = glm::vec3(temp2[4].x, temp2[4].y, temp2[4].z);
-			glm::vec3 p7 = glm::vec3(temp2[7].x, temp2[7].y, temp2[7].z);
-
-
-			glm::vec3 vec0 = (p3 - p0);
-			glm::vec3 vec3 = (p7 - p3);
-			glm::vec3 vec4 = (p0 - p4);
-			glm::vec3 vec7 = (p4 - p7);
-
-
-			glm::vec3 rightV0 = glm::normalize(glm::cross(vec0, glm::vec3(0.0f, 1.0f, 0.0f)));
-			glm::vec3 rightV3 = glm::normalize(glm::cross(vec3, glm::vec3(0.0f, 1.0f, 0.0f)));
-			glm::vec3 rightV4 = glm::normalize(glm::cross(vec4, glm::vec3(0.0f, 1.0f, 0.0f)));
-			glm::vec3 rightV7 = glm::normalize(glm::cross(vec7, glm::vec3(0.0f, 1.0f, 0.0f)));
-
-
-			glm::vec3 projed0 = glm::dot(glm::normalize(vec0), cam.pos - p0) / glm::length(vec0) * (vec0) + p0;
-			glm::vec3 projed3 = glm::dot(glm::normalize(vec3), cam.pos - p3) / glm::length(vec3) * (vec3) + p3;
-			glm::vec3 projed4 = glm::dot(glm::normalize(vec4), cam.pos - p4) / glm::length(vec4) * (vec4) + p4;
-			glm::vec3 projed7 = glm::dot(glm::normalize(vec7), cam.pos - p7) / glm::length(vec7) * (vec7) + p7;
-
-
-			glm::vec3 vecp0 = (cam.pos - projed0);
-			glm::vec3 vecp3 = (cam.pos - projed3);
-			glm::vec3 vecp4 = (cam.pos - projed4);
-			glm::vec3 vecp7 = (cam.pos - projed7);
-
-
-			float dotVecP0 = glm::dot(rightV0, vecp0);
-			float dotVecP3 = glm::dot(rightV3, vecp3);
-			float dotVecP4 = glm::dot(rightV4, vecp4);
-			float dotVecP7 = glm::dot(rightV7, vecp7);
-
-
-			if ((dotVecP0 <= 0 && dotVecP3 <= 0) &&
-				(dotVecP4 <= 0 && dotVecP7 <= 0) &&
-				(feet + h + h / 2.0f >= p0.y))
-			{
-				feet = p0.y;
-				cam.pos.y = 0.3f + feet;
-				onStep = true;
-				//std::cout << i << '\n';
-
-			}
-
-
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-		}
-		
-		if (!onStep)
-		{
-			feet = 0.0f;
-			cam.pos.y = 0.3f + feet;
-		}
-
-		
 		model = glm::mat4();
 
-		model = glm::translate(model, glm::vec3(0.0f, -0.05f, 0.0f));
 
-		model = glm::scale(model, glm::vec3(400.0f, 0.1f, 400.0f));
 
-		myShader.setVec3("col", glm::vec3(0.0f, 1.0f, 0.0f));
+		myShader.setVec3("col", glm::vec3(139/255.0f, 69/255.0f, 19/255.0f));
+
 		myShader.setMat4("model", model);
+
+
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
 
 
 		glfwSwapBuffers(window);
