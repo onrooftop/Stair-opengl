@@ -126,12 +126,21 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fshader.frag" />
     <None Include="lightfrag.frag" />
+    <None Include="lightfragG.frag" />
+    <None Include="lightfragT.frag" />
     <None Include="lightvertex.vert" />
+    <None Include="lightvertexG.vert" />
+    <None Include="lightvertexT.vert" />
     <None Include="vshader.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="container2.png" />
+    <Image Include="container2_specular.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
