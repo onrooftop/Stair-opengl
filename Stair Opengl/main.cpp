@@ -110,7 +110,7 @@ int main()
 		1,6,2
 	};
 
-	Shader myShader("vshader.vert", "fshader.frag");
+	Shader light("vshader.vert", "fshader.frag");
 
 	unsigned int VAO, VBO, EBO;
 
@@ -162,16 +162,16 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		myShader.use();
+		light.use();
 		glBindVertexArray(VAO);
 
 		proj = glm::perspective(glm::radians(cam.fov), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
 	
 		
 
-		myShader.setMat4("proj", proj);
+		light.setMat4("proj", proj);
 		view = cam.getView();
-		myShader.setMat4("view", view);
+		light.setMat4("view", view);
 
 
 		float w = 0.5f;
@@ -191,9 +191,9 @@ int main()
 
 			model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
 
-			myShader.setVec3("col", color[i % 2]);
+			light.setVec3("col", color[i % 2]);
 
-			myShader.setMat4("model", model);
+			light.setMat4("model", model);
 		
 
 			glm::vec4 temp2[8];
@@ -268,8 +268,8 @@ int main()
 
 		model = glm::scale(model, glm::vec3(400.0f, 0.1f, 400.0f));
 
-		myShader.setVec3("col", glm::vec3(0.0f, 1.0f, 0.0f));
-		myShader.setMat4("model", model);
+		light.setVec3("col", glm::vec3(0.0f, 1.0f, 0.0f));
+		light.setMat4("model", model);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 
