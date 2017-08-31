@@ -16,6 +16,9 @@ struct Light
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+
+	vec3 direction;
+	float cutOff;
 };
 
 

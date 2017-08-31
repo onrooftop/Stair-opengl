@@ -239,14 +239,15 @@ int main()
 
 
 
-		myShader.setVec3("light.ambient", glm::vec3(0.2f));
-		myShader.setVec3("light.diffuse", glm::vec3(0.5f));
+		myShader.setVec3("light.ambient", glm::vec3(0.1f));
+		myShader.setVec3("light.diffuse", glm::vec3(0.8f));
 		myShader.setVec3("light.specular", glm::vec3(1.0f));
-		myShader.setVec3("light.position", lightPos);
+		myShader.setVec3("light.position", cam.pos);
 
-		myShader.setFloat("light.constant", 1.0f);
-		myShader.setFloat("light.linear", 0.09f);
-		myShader.setFloat("light.quadratic", 0.032f);
+		myShader.setVec3("light.direction", cam.front);
+		myShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+		myShader.setFloat("light.cutOffOutter", glm::cos(glm::radians(17.5f)));
+
 
 		myShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 		myShader.setVec3("viewPos", cam.pos);
