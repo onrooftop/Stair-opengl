@@ -33,6 +33,7 @@ float feet = 0.0f;
 
 bool canmove = true;
 bool firstmouse = true;
+bool toggleFlashlight = true;
 
 Camera cam(glm::vec3(0.0f, feet + 0.3f, 2.0f));
 
@@ -238,19 +239,34 @@ int main()
 		light.setFloat("pointLights[1].linear", 0.09);
 		light.setFloat("pointLights[1].quadratic", 0.032);
 
-		light.setVec3("spotlight.position", cam.pos);
-		light.setVec3("spotlight.direction", cam.front);
-		light.setVec3("spotlight.ambient", glm::vec3(0.0f));
-		light.setVec3("spotlight.diffuse", glm::vec3(1.0f));
-		light.setVec3("spotlight.specular", glm::vec3(1.0f));
-		light.setFloat("spotlight.cutOff", glm::cos(glm::radians(12.5f)));
-		light.setFloat("spotlight.cutOffOutter", glm::cos(glm::radians(17.5f)));
+		if (toggleFlashlight)
+		{
+			light.setVec3("spotlight.position", cam.pos);
+			light.setVec3("spotlight.direction", cam.front);
+			light.setVec3("spotlight.ambient", glm::vec3(0.0f));
+			light.setVec3("spotlight.diffuse", glm::vec3(1.0f));
+			light.setVec3("spotlight.specular", glm::vec3(1.0f));
+			light.setFloat("spotlight.cutOff", glm::cos(glm::radians(12.5f)));
+			light.setFloat("spotlight.cutOffOutter", glm::cos(glm::radians(17.5f)));
+		}
+		else
+		{
+			light.setVec3("spotlight.position", cam.pos);
+			light.setVec3("spotlight.direction", cam.front);
+			light.setVec3("spotlight.ambient", glm::vec3(0.0f));
+			light.setVec3("spotlight.diffuse", glm::vec3(0.0f));
+			light.setVec3("spotlight.specular", glm::vec3(0.0f));
+			light.setFloat("spotlight.cutOff", glm::cos(glm::radians(0.0f)));
+			light.setFloat("spotlight.cutOffOutter", glm::cos(glm::radians(0.0f)));
+		}
+
 
 
 
 
 		float w = 0.5f;
 		float h = 0.075f;
+		float feetMin = 0;
 
 		glm::vec4 testMin, testMax, temp;
 
@@ -320,13 +336,15 @@ int main()
 				(dotVecP4 <= 0 && dotVecP7 <= 0) &&
 				(feet + h + h / 2.0f >= p0.y))
 			{
-				feet = max(feet, p0.y);
+				feetMin = min(p0.y, feet);
+				feet = max(p0.y, feet);
 				cam.pos.y = 0.3f + feet;
 				onStep = true;
-				std::cout << i << '\n';
+				//std::cout << i << '\n';
 
 			}
-
+			
+			
 		
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -336,6 +354,11 @@ int main()
 		if (!onStep)
 		{
 			feet = 0.0f;
+			cam.pos.y = 0.3f + feet;
+		}
+		else if (feetMin < feet)
+		{
+			feet = feetMin;
 			cam.pos.y = 0.3f + feet;
 		}
 
@@ -392,6 +415,17 @@ void processInput(GLFWwindow *window)
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		cam.keyboard_move(RIGHT, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS)
+		toggleFlashlight = true;
+
+	if (glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS)
+	{
+		toggleFlashlight = false;
+	}
+		
+
+	
 
 }
 
