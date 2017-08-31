@@ -125,10 +125,16 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fshader.frag" />
+    <None Include="fshaderNoLight.frag" />
     <None Include="vshader.vert" />
+    <None Include="vshaderNoLight.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\mypic\container2.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

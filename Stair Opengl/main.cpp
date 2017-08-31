@@ -9,13 +9,16 @@
 #include "Shader.h"
 #include "Camera.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+
 
 void processInput(GLFWwindow *window);
 void framebuffer_size_callback(GLFWwindow *window, int w, int h);
 void mouse_callback(GLFWwindow *window, double xpos, double ypos);
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
-
-
+unsigned int load_texture(const char *path);
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
@@ -28,13 +31,8 @@ float lastX = WIDTH / 2.0f;
 float lastY = HEIGHT / 2.0f;
 float feet = 0.0f;
 
-
-
 bool canmove = true;
 bool firstmouse = true;
-
-
-
 
 Camera cam(glm::vec3(0.0f, feet + 0.3f, 2.0f));
 
@@ -53,24 +51,20 @@ int main()
 		glfwTerminate();
 		return -1;
 	}
+
 	glfwSetWindowPos(window, 400, 400);
-
 	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
 	//glfwSetScrollCallback(window, scroll_callback);
-
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		std::cout << "FAILED TO LOAD OPENGL\n";
 		return -1;
 	}
-
-
 
 	glm::vec4 vertices[] = {
 		glm::vec4(-0.5f,  0.5f,  0.5f, 1.0f),
@@ -83,70 +77,89 @@ int main()
 		glm::vec4( 0.5f,  0.5f, -0.5f, 1.0f)
 	};
 
-	float vertices2[] = {
-		-0.5f,  0.5f,  0.5f,  //v1
-		-0.5f, -0.5f,  0.5f,  //v2
-		 0.5f, -0.5f,  0.5f,  //v3
-		 0.5f,  0.5f,  0.5f,  //v4
-		-0.5f,  0.5f, -0.5f,  //v5
-		-0.5f, -0.5f, -0.5f,  //v6
-		 0.5f, -0.5f, -0.5f,  //v7
-		 0.5f,  0.5f, -0.5f   //v8
-	
-	};
+	float vertices_data[] = {
+		// positions          // normals           // texture coords
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
 
-	unsigned int indices[] = {
-		0,1,2,
-		0,2,3,
-		4,5,6,
-		4,6,7,
-		4,5,1,
-		4,1,0,
-		3,2,6,
-		3,6,7,
-		4,0,3,
-		4,3,7,
-		1,5,6,
-		1,6,2
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 	};
 
 	Shader light("vshader.vert", "fshader.frag");
+	Shader lamp("vshaderNoLight.vert", "fshaderNoLight.frag");
 
-	unsigned int VAO, VBO, EBO;
+	unsigned int VAO, VBO;
 
 	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
 	glGenVertexArrays(1, &VAO);
 
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_data), vertices_data, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)3);
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)6);
+	glEnableVertexAttribArray(2);
+
+	unsigned int diffuseMap = load_texture("d:\\Opengl\\mypic\\container2.png");
 
 	glm::mat4 proj;
 	glm::mat4 view;
 	glm::mat4 model;
 
-
-
 	glEnable(GL_DEPTH_TEST);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glm::vec3 color[2];
-
 	color[0] = glm::vec3(1.0f, 0.0f, 1.0f);
 	color[1] = glm::vec3(0.0f, 1.0f, 1.0f);
 
-	
-
 	bool onStep;
+
+
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -162,14 +175,17 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		light.use();
 		glBindVertexArray(VAO);
+		
+		
+		light.use();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+
 
 		proj = glm::perspective(glm::radians(cam.fov), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
-	
-		
-
 		light.setMat4("proj", proj);
+
 		view = cam.getView();
 		light.setMat4("view", view);
 
@@ -180,18 +196,16 @@ int main()
 		glm::vec4 testMin, testMax, temp;
 
 
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			model = glm::mat4();
-			model = glm::rotate(model, glm::radians(10.0f * i), glm::vec3(0.0f, 1.0f, 0.0f));
+			//model = glm::rotate(model, glm::radians(10.0f * i), glm::vec3(0.0f, 1.0f, 0.0f));
 
-			model = glm::translate(model, glm::vec3(0.0f, h * i, 1.0f));
+			//model = glm::translate(model, glm::vec3(0.0f, h * i, 1.0f));
 
-			model = glm::scale(model, glm::vec3(w, h, 0.3f));
+			//model = glm::scale(model, glm::vec3(w, h, 0.3f));
 
-			model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
-
-			light.setVec3("col", color[i % 2]);
+			//model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
 
 			light.setMat4("model", model);
 		
@@ -251,7 +265,7 @@ int main()
 			}
 
 
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		}
 		
@@ -261,16 +275,21 @@ int main()
 			cam.pos.y = 0.3f + feet;
 		}
 
-		
-		model = glm::mat4();
+		//lamp.use();
+		//
+		//model = glm::mat4();
 
-		model = glm::translate(model, glm::vec3(0.0f, -0.05f, 0.0f));
+		//model = glm::translate(model, glm::vec3(0.0f, -0.05f, 0.0f));
 
-		model = glm::scale(model, glm::vec3(400.0f, 0.1f, 400.0f));
+		//model = glm::scale(model, glm::vec3(400.0f, 0.1f, 400.0f));
 
-		light.setVec3("col", glm::vec3(0.0f, 1.0f, 0.0f));
-		light.setMat4("model", model);
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+		//lamp.setMat4("proj", proj);
+		//lamp.setMat4("view", view);
+		//lamp.setVec3("col", glm::vec3(0.0f, 1.0f, 0.0f));
+		//lamp.setMat4("model", model);
+
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
 		glfwSwapBuffers(window);
@@ -281,11 +300,11 @@ int main()
 
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
-
 	glfwTerminate();
+
 	return 0;
 }
+
 
 void processInput(GLFWwindow *window)
 {
@@ -308,10 +327,12 @@ void processInput(GLFWwindow *window)
 
 }
 
+
 void framebuffer_size_callback(GLFWwindow *window, int w, int h)
 {
 	glViewport(0, 0, w, h);
 }
+
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos)
 {
@@ -336,8 +357,49 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos)
 
 }
 
+
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
 {
 	cam.mouse_scroll(yoffset);
 }
 
+
+unsigned int load_texture(const char *path)
+{
+	unsigned int textureID;
+
+	glGenTextures(1, &textureID);
+	
+
+	int width, height, nChannel;
+	unsigned char* data = stbi_load(path, &width, &height, &nChannel, 0);
+	
+	if (data)
+	{
+		GLenum format;
+		if (nChannel == 3)
+			format = GL_RGB;
+		else if (nChannel == 4)
+			format = GL_RGBA;
+
+
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	}
+	else
+	{
+		std::cout << "Texture failed to load image\n";
+	}
+
+
+	stbi_image_free(data);
+	return textureID;
+}

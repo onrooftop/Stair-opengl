@@ -35,6 +35,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vshader.vert">
@@ -43,5 +46,16 @@
     <None Include="fshader.frag">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="fshaderNoLight.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="vshaderNoLight.vert">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\mypic\container2.png">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
