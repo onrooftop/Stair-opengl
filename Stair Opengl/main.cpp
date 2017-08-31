@@ -138,13 +138,20 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)3);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)6);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
 	unsigned int diffuseMap = load_texture("d:\\Opengl\\mypic\\container2.png");
+	unsigned int specularMap = load_texture("d:\\Opengl\\mypic\\container2_specular.png");
+
+	unsigned int tile = load_texture("d:\\Opengl\\mypic\\tile.jpg");
+
+	light.use();
+	light.setInt("material.diffuse", 0);
+	light.setInt("material.specular", 1);
 
 	glm::mat4 proj;
 	glm::mat4 view;
@@ -153,9 +160,6 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	glm::vec3 color[2];
-	color[0] = glm::vec3(1.0f, 0.0f, 1.0f);
-	color[1] = glm::vec3(0.0f, 1.0f, 1.0f);
 
 	bool onStep;
 
@@ -177,17 +181,72 @@ int main()
 
 		glBindVertexArray(VAO);
 		
-		
+		proj = glm::perspective(glm::radians(cam.fov), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
+		view = cam.getView();
+
+
+		lamp.use();
+		proj = glm::perspective(glm::radians(cam.fov), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
+		view = cam.getView();
+
+
+
+		model = glm::mat4();
+		model = glm::translate(model, glm::vec3(0.0f, 2.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.2f));
+
+		lamp.setMat4("proj", proj);
+		lamp.setMat4("view", view);
+		lamp.setMat4("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		model = glm::mat4();
+		model = glm::translate(model, glm::vec3(0.0f, 8.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.2f));
+		lamp.setMat4("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
 		light.use();
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specularMap);
 
 
-		proj = glm::perspective(glm::radians(cam.fov), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
-		light.setMat4("proj", proj);
+		light.setVec3("viewPos", cam.pos);
+		light.setFloat("material.shininess", 32.0f);
 
-		view = cam.getView();
-		light.setMat4("view", view);
+		light.setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
+		light.setVec3("dirLight.ambient", glm::vec3(0.05f));
+		light.setVec3("dirLight.diffuse", glm::vec3(0.4f));
+		light.setVec3("dirLight.specular", glm::vec3(0.0f));
+
+		light.setVec3("pointLights[0].position", glm::vec3(0.0f, 2.0f, 0.0f));
+		light.setVec3("pointLights[0].ambient",  glm::vec3(0.05f, 0.05f, 0.05f));
+		light.setVec3("pointLights[0].diffuse",  glm::vec3(0.8f, 0.8f, 0.8f));
+		light.setVec3("pointLights[0].specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		light.setFloat("pointLights[0].constant",1.0f);
+		light.setFloat("pointLights[0].linear",  0.09);
+		light.setFloat("pointLights[0].quadratic",0.032);
+
+		light.setVec3("pointLights[1].position", glm::vec3(0.0f, 8.0f, 0.0f));
+		light.setVec3("pointLights[1].ambient", glm::vec3(0.05f, 0.05f, 0.05f));
+		light.setVec3("pointLights[1].diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
+		light.setVec3("pointLights[1].specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		light.setFloat("pointLights[1].constant", 1.0f);
+		light.setFloat("pointLights[1].linear", 0.09);
+		light.setFloat("pointLights[1].quadratic", 0.032);
+
+		light.setVec3("spotlight.position", cam.pos);
+		light.setVec3("spotlight.direction", cam.front);
+		light.setVec3("spotlight.ambient", glm::vec3(0.0f));
+		light.setVec3("spotlight.diffuse", glm::vec3(1.0f));
+		light.setVec3("spotlight.specular", glm::vec3(1.0f));
+		light.setFloat("spotlight.cutOff", glm::cos(glm::radians(12.5f)));
+		light.setFloat("spotlight.cutOffOutter", glm::cos(glm::radians(17.5f)));
+
+
 
 
 		float w = 0.5f;
@@ -196,16 +255,20 @@ int main()
 		glm::vec4 testMin, testMax, temp;
 
 
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 100; i++)
 		{
+
+			light.setMat4("proj", proj);
+			light.setMat4("view", view);
+
 			model = glm::mat4();
-			//model = glm::rotate(model, glm::radians(10.0f * i), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::rotate(model, glm::radians(10.0f * i), glm::vec3(0.0f, 1.0f, 0.0f));
 
-			//model = glm::translate(model, glm::vec3(0.0f, h * i, 1.0f));
+			model = glm::translate(model, glm::vec3(0.0f, h * i, 1.0f));
 
-			//model = glm::scale(model, glm::vec3(w, h, 0.3f));
+			model = glm::scale(model, glm::vec3(0.3f, h, w));
 
-			//model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
+			model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
 
 			light.setMat4("model", model);
 		
@@ -257,13 +320,14 @@ int main()
 				(dotVecP4 <= 0 && dotVecP7 <= 0) &&
 				(feet + h + h / 2.0f >= p0.y))
 			{
-				feet = p0.y;
+				feet = max(feet, p0.y);
 				cam.pos.y = 0.3f + feet;
 				onStep = true;
-				//std::cout << i << '\n';
+				std::cout << i << '\n';
 
 			}
 
+		
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -275,21 +339,25 @@ int main()
 			cam.pos.y = 0.3f + feet;
 		}
 
-		//lamp.use();
-		//
-		//model = glm::mat4();
+		light.use();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tile);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, tile);
+		
+		model = glm::mat4();
 
-		//model = glm::translate(model, glm::vec3(0.0f, -0.05f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, -0.05f, 0.0f));
 
-		//model = glm::scale(model, glm::vec3(400.0f, 0.1f, 400.0f));
+		model = glm::scale(model, glm::vec3(400.0f, 0.1f, 400.0f));
 
 
-		//lamp.setMat4("proj", proj);
-		//lamp.setMat4("view", view);
-		//lamp.setVec3("col", glm::vec3(0.0f, 1.0f, 0.0f));
-		//lamp.setMat4("model", model);
+		light.setMat4("proj", proj);
+		light.setMat4("view", view);
+		light.setVec3("col", glm::vec3(0.0f, 1.0f, 0.0f));
+		light.setMat4("model", model);
 
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
 		glfwSwapBuffers(window);
@@ -390,8 +458,8 @@ unsigned int load_texture(const char *path)
 
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 
 	}
 	else
