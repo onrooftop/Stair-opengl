@@ -14,24 +14,27 @@ void Camera::update()
 	up = glm::normalize(glm::cross(right, front));
 }
 
-Camera::Camera(glm::vec3 _pos, glm::vec3 _up, float _yaw, float _pitch, bool fly) :
-	front(glm::vec3(0.0f, 0.0f, -1.0f)), move_speed(MOVE_SPEED), mouse_sensitivity(MOUSE_SENSITIVITY),
-	world_up(glm::vec3(0.0f, 1.0f, 0.0f)), fov(FOV)
+Camera::Camera(glm::vec3 _pos, glm::vec3 _up, float _yaw, float _pitch, bool _fly) 
+	: front(glm::vec3(0.0f, 0.0f, -1.0f))
+	, move_speed(MOVE_SPEED), mouse_sensitivity(MOUSE_SENSITIVITY)
+	, world_up(glm::vec3(0.0f, 1.0f, 0.0f))
+	, fov(FOV)
 {
 	pos = _pos;
 	up = _up;
 	yaw = _yaw;
 	pitch = _pitch;
+	fly = _fly;
 	update();
 }
 
 void Camera::keyboard_move(Camera_Movement move, float deltaTime)
 {
 	float y;
-	if (!fly)
-	{
-		y = pos.y;
-	}
+	//if (!fly)
+	//{
+	//	y = pos.y;
+	//}
 	if (move == FORWARD)
 	{
 		pos += front * move_speed * deltaTime;
@@ -52,10 +55,10 @@ void Camera::keyboard_move(Camera_Movement move, float deltaTime)
 		pos -= right * move_speed * deltaTime;
 	}
 
-	if (!fly)
-	{
-		pos.y = y;
-	}
+	//if (!fly)
+	//{
+	//	pos.y = y;
+	//}
 	
 }
 

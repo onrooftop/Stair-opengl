@@ -200,14 +200,16 @@ int main()
 
 
 		light.setVec3("dirLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
-		light.setVec3("dirLight.lightCol", glm::vec3(0.5f));
+		light.setVec3("dirLight.lightCol", glm::vec3(0.1f));
 
 
-		light.setVec3("pointLights[0].position", glm::vec3(0.0f, 1.0f, 0.0f));
+		float plY = sin(currentTime) + 1;
+
+		light.setVec3("pointLights[0].position", glm::vec3(0.0f, plY + 0.05f, 0.0f));
 		light.setVec3("pointLights[0].lightCol", glm::vec3(1.0f, 0.0f, 0.0f));
 		light.setFloat("pointLights[0].constant", 1.0f);
-		light.setFloat("pointLights[0].linear", 0.7f);
-		light.setFloat("pointLights[0].quadratic", 1.8f);
+		light.setFloat("pointLights[0].linear", 0.22f);
+		light.setFloat("pointLights[0].quadratic", 0.20f);
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -219,7 +221,8 @@ int main()
 		lamp.use();
 
 		model = glm::mat4();
-		model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, plY, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.05f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 
 
