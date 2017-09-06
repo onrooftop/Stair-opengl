@@ -126,12 +126,12 @@ int main()
 	Shader light("vshader.vert", "fshader.frag");
 	Shader lamp("vshaderNoLight.vert", "fshaderNoLight.frag");
 
-	unsigned int VAO, VBO;
+	unsigned int pVAO, lVAO, VBO;
 
 	glGenBuffers(1, &VBO);
-	glGenVertexArrays(1, &VAO);
+	glGenVertexArrays(1, &pVAO);
 
-	glBindVertexArray(VAO);
+	glBindVertexArray(pVAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_data), vertices_data, GL_STATIC_DRAW);
@@ -145,14 +145,15 @@ int main()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-	unsigned int diffuseMap = load_texture("d:\\Opengl\\mypic\\container2.png");
-	unsigned int specularMap = load_texture("d:\\Opengl\\mypic\\container2_specular.png");
 
-	unsigned int tile = load_texture("d:\\Opengl\\mypic\\tile.jpg");
+	glGenVertexArrays(1, &lVAO);
+	glBindVertexArray(lVAO);
 
-	light.use();
-	light.setInt("material.diffuse", 0);
-	light.setInt("material.specular", 1);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+
+
 
 	glm::mat4 proj;
 	glm::mat4 view;
@@ -162,14 +163,10 @@ int main()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
-	bool onStep;
 
-
-
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	while (!glfwWindowShouldClose(window))
 	{
-		onStep = false;
-		canmove = true;
 
 		float currentTime = (float)glfwGetTime();
 		deltaTime = currentTime - lastTime;
@@ -177,210 +174,62 @@ int main()
 
 		processInput(window);
 
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glBindVertexArray(VAO);
-		
+
 		proj = glm::perspective(glm::radians(cam.fov), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
 		view = cam.getView();
 
-
-		lamp.use();
-		proj = glm::perspective(glm::radians(cam.fov), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
-		view = cam.getView();
-
-
-
-		model = glm::mat4();
-		model = glm::translate(model, glm::vec3(0.0f, 2.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.2f));
-
-		lamp.setMat4("proj", proj);
-		lamp.setMat4("view", view);
-		lamp.setMat4("model", model);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		model = glm::mat4();
-		model = glm::translate(model, glm::vec3(0.0f, 8.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.2f));
-		lamp.setMat4("model", model);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-
+		glBindVertexArray(pVAO);
 		light.use();
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, diffuseMap);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, specularMap);
 
 
-		light.setVec3("viewPos", cam.pos);
-		light.setFloat("material.shininess", 32.0f);
-
-		light.setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
-		light.setVec3("dirLight.ambient", glm::vec3(0.05f));
-		light.setVec3("dirLight.diffuse", glm::vec3(0.4f));
-		light.setVec3("dirLight.specular", glm::vec3(0.0f));
-
-		light.setVec3("pointLights[0].position", glm::vec3(0.0f, 2.0f, 0.0f));
-		light.setVec3("pointLights[0].ambient",  glm::vec3(0.05f, 0.05f, 0.05f));
-		light.setVec3("pointLights[0].diffuse",  glm::vec3(0.8f, 0.8f, 0.8f));
-		light.setVec3("pointLights[0].specular", glm::vec3(1.0f, 1.0f, 1.0f));
-		light.setFloat("pointLights[0].constant",1.0f);
-		light.setFloat("pointLights[0].linear",  0.09);
-		light.setFloat("pointLights[0].quadratic",0.032);
-
-		light.setVec3("pointLights[1].position", glm::vec3(0.0f, 8.0f, 0.0f));
-		light.setVec3("pointLights[1].ambient", glm::vec3(0.05f, 0.05f, 0.05f));
-		light.setVec3("pointLights[1].diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
-		light.setVec3("pointLights[1].specular", glm::vec3(1.0f, 1.0f, 1.0f));
-		light.setFloat("pointLights[1].constant", 1.0f);
-		light.setFloat("pointLights[1].linear", 0.09);
-		light.setFloat("pointLights[1].quadratic", 0.032);
-
-		if (toggleFlashlight)
-		{
-			light.setVec3("spotlight.position", cam.pos);
-			light.setVec3("spotlight.direction", cam.front);
-			light.setVec3("spotlight.ambient", glm::vec3(0.0f));
-			light.setVec3("spotlight.diffuse", glm::vec3(1.0f));
-			light.setVec3("spotlight.specular", glm::vec3(1.0f));
-			light.setFloat("spotlight.cutOff", glm::cos(glm::radians(12.5f)));
-			light.setFloat("spotlight.cutOffOutter", glm::cos(glm::radians(17.5f)));
-		}
-		else
-		{
-			light.setVec3("spotlight.position", cam.pos);
-			light.setVec3("spotlight.direction", cam.front);
-			light.setVec3("spotlight.ambient", glm::vec3(0.0f));
-			light.setVec3("spotlight.diffuse", glm::vec3(0.0f));
-			light.setVec3("spotlight.specular", glm::vec3(0.0f));
-			light.setFloat("spotlight.cutOff", glm::cos(glm::radians(0.0f)));
-			light.setFloat("spotlight.cutOffOutter", glm::cos(glm::radians(0.0f)));
-		}
-
-
-
-
-
-		float w = 0.5f;
-		float h = 0.075f;
-		float feetMin = 0;
-
-		glm::vec4 testMin, testMax, temp;
-
-
-		for (int i = 0; i < 100; i++)
-		{
-
-			light.setMat4("proj", proj);
-			light.setMat4("view", view);
-
-			model = glm::mat4();
-			model = glm::rotate(model, glm::radians(10.0f * i), glm::vec3(0.0f, 1.0f, 0.0f));
-
-			model = glm::translate(model, glm::vec3(0.0f, h * i, 1.0f));
-
-			model = glm::scale(model, glm::vec3(0.3f, h, w));
-
-			model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
-
-			light.setMat4("model", model);
-		
-
-			glm::vec4 temp2[8];
-
-			for (int j = 0; j < 8; j++)
-			{
-				temp2[j] = model * vertices[j];
-			}
-
-			glm::vec3 p0 = glm::vec3(temp2[0].x, temp2[0].y, temp2[0].z);
-			glm::vec3 p3 = glm::vec3(temp2[3].x, temp2[3].y, temp2[3].z);
-			glm::vec3 p4 = glm::vec3(temp2[4].x, temp2[4].y, temp2[4].z);
-			glm::vec3 p7 = glm::vec3(temp2[7].x, temp2[7].y, temp2[7].z);
-
-
-			glm::vec3 vec0 = (p3 - p0);
-			glm::vec3 vec3 = (p7 - p3);
-			glm::vec3 vec4 = (p0 - p4);
-			glm::vec3 vec7 = (p4 - p7);
-
-
-			glm::vec3 rightV0 = glm::normalize(glm::cross(vec0, glm::vec3(0.0f, 1.0f, 0.0f)));
-			glm::vec3 rightV3 = glm::normalize(glm::cross(vec3, glm::vec3(0.0f, 1.0f, 0.0f)));
-			glm::vec3 rightV4 = glm::normalize(glm::cross(vec4, glm::vec3(0.0f, 1.0f, 0.0f)));
-			glm::vec3 rightV7 = glm::normalize(glm::cross(vec7, glm::vec3(0.0f, 1.0f, 0.0f)));
-
-
-			glm::vec3 projed0 = glm::dot(glm::normalize(vec0), cam.pos - p0) / glm::length(vec0) * (vec0) + p0;
-			glm::vec3 projed3 = glm::dot(glm::normalize(vec3), cam.pos - p3) / glm::length(vec3) * (vec3) + p3;
-			glm::vec3 projed4 = glm::dot(glm::normalize(vec4), cam.pos - p4) / glm::length(vec4) * (vec4) + p4;
-			glm::vec3 projed7 = glm::dot(glm::normalize(vec7), cam.pos - p7) / glm::length(vec7) * (vec7) + p7;
-
-
-			glm::vec3 vecp0 = (cam.pos - projed0);
-			glm::vec3 vecp3 = (cam.pos - projed3);
-			glm::vec3 vecp4 = (cam.pos - projed4);
-			glm::vec3 vecp7 = (cam.pos - projed7);
-
-
-			float dotVecP0 = glm::dot(rightV0, vecp0);
-			float dotVecP3 = glm::dot(rightV3, vecp3);
-			float dotVecP4 = glm::dot(rightV4, vecp4);
-			float dotVecP7 = glm::dot(rightV7, vecp7);
-
-
-			if ((dotVecP0 <= 0 && dotVecP3 <= 0) &&
-				(dotVecP4 <= 0 && dotVecP7 <= 0) &&
-				(feet + h + h / 2.0f >= p0.y))
-			{
-				feetMin = min(p0.y, feet);
-				feet = max(p0.y, feet);
-				cam.pos.y = 0.3f + feet;
-				onStep = true;
-				//std::cout << i << '\n';
-
-			}
-			
-			
-		
-
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		}
-		
-		if (!onStep)
-		{
-			feet = 0.0f;
-			cam.pos.y = 0.3f + feet;
-		}
-		else if (feetMin < feet)
-		{
-			feet = feetMin;
-			cam.pos.y = 0.3f + feet;
-		}
-
-		light.use();
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, tile);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, tile);
-		
 		model = glm::mat4();
-
-		model = glm::translate(model, glm::vec3(0.0f, -0.05f, 0.0f));
-
-		model = glm::scale(model, glm::vec3(400.0f, 0.1f, 400.0f));
+		model = glm::scale(model, glm::vec3(300.0f, 0.1f, 300.0f));
+		model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
 
 
 		light.setMat4("proj", proj);
 		light.setMat4("view", view);
-		light.setVec3("col", glm::vec3(0.0f, 1.0f, 0.0f));
 		light.setMat4("model", model);
+		light.setVec3("viewPos", cam.pos);
+		
+		light.setVec3("material.matColor", glm::vec3(0.1f));
+		light.setFloat("material.shininess", 32.0f);
+
+
+		light.setVec3("dirLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
+		light.setVec3("dirLight.lightCol", glm::vec3(0.5f));
+
+
+		light.setVec3("pointLights[0].position", glm::vec3(0.0f, 1.0f, 0.0f));
+		light.setVec3("pointLights[0].lightCol", glm::vec3(1.0f, 0.0f, 0.0f));
+		light.setFloat("pointLights[0].constant", 1.0f);
+		light.setFloat("pointLights[0].linear", 0.7f);
+		light.setFloat("pointLights[0].quadratic", 1.8f);
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+
+		//point light 
+
+
+		lamp.use();
+
+		model = glm::mat4();
+		model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+
+
+		lamp.setVec3("col", glm::vec3(1.0f, 0.0f, 0.0f));
+		lamp.setMat4("proj", proj);
+		lamp.setMat4("view", view);
+		lamp.setMat4("model", model);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
 
 
 		glfwSwapBuffers(window);
@@ -389,7 +238,7 @@ int main()
 
 
 
-	glDeleteVertexArrays(1, &VAO);
+	glDeleteVertexArrays(1, &pVAO);
 	glDeleteBuffers(1, &VBO);
 	glfwTerminate();
 
