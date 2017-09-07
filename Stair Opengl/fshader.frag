@@ -45,7 +45,7 @@ in vec3 Normal;
 in vec2 TexCoord;
 
 
-#define NR_POINT_LIGHT 1
+#define NR_POINT_LIGHT 50
 uniform DirLight dirLight;
 uniform PointLight pointLights[NR_POINT_LIGHT];
 uniform Spotlight spotlight;

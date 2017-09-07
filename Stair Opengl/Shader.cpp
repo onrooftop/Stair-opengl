@@ -85,22 +85,22 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 	glDeleteShader(fragment);
 }
 
-void Shader::setMat4(const char* name, glm::mat4 value)
+void Shader::setMat4(const std::string name, glm::mat4 value)
 {
-	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, &value[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &value[0][0]);
 }
 
-void Shader::setVec3(const char * name, glm::vec3 value)
+void Shader::setVec3(const std::string name, glm::vec3 value)
 {
-	glUniform3fv(glGetUniformLocation(ID, name), 1, &value[0]);
+	glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
 }
 
-void Shader::setFloat(const char * name, float value)
+void Shader::setFloat(const std::string name, float value)
 {
-	glUniform1f(glGetUniformLocation(ID, name), value);
+	glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
 }
 
-void Shader::setInt(const char * name, int value)
+void Shader::setInt(const std::string name, int value)
 {
-	glUniform1i(glGetUniformLocation(ID, name), value);
+	glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
 }

@@ -6,6 +6,9 @@
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
 
+#include <stdlib.h>
+#include <time.h>
+
 #include "Shader.h"
 #include "Camera.h"
 
@@ -35,7 +38,7 @@ bool canmove = true;
 bool firstmouse = true;
 bool toggleFlashlight = true;
 
-Camera cam(glm::vec3(0.0f, feet + 0.3f, 2.0f));
+Camera cam(glm::vec3(0.0f, 3.0f, 2.0f));
 
 
 int main()
@@ -163,8 +166,25 @@ int main()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
+	srand(time(0));
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	float lightColorX;
+	float lightColorY;
+	float lightColorZ;
+
+	glm::vec3 cols[5];
+
+
+	for (int i = 0; i < 5; i++)
+	{
+		lightColorX = (rand() % 255) / 255.0f;
+		lightColorY = (rand() % 255) / 255.0f;
+		lightColorZ = (rand() % 255) / 255.0f;
+		cols[i] = glm::vec3(lightColorX, lightColorY, lightColorZ);
+	}
+
+
 	while (!glfwWindowShouldClose(window))
 	{
 
@@ -182,9 +202,191 @@ int main()
 		view = cam.getView();
 
 		glBindVertexArray(pVAO);
+
+
+
+
+
 		light.use();
+		light.setVec3("dirLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
+		light.setVec3("dirLight.lightCol", glm::vec3(0.1f));
 
 
+
+
+
+		//point light  1
+
+		for (int i = 0; i < 20; i++)
+		{
+
+			float y = sin(currentTime*2.5 + i)+1;
+
+
+			if (y - 0.001 <= 0.0f && i == 0)
+			{
+				cols[0].x = (rand() % 255) / 255.0f;
+				cols[0].y = (rand() % 255) / 255.0f;
+				cols[0].z = (rand() % 255) / 255.0f;
+
+			}
+
+
+			glm::vec3 color = glm::vec3(lightColorX, lightColorY, lightColorZ);
+
+			model = glm::mat4();
+			model = glm::rotate(model, glm::radians(360/ 20.0f * i), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::translate(model, glm::vec3(1.5f, y/2.0f, 0.0f));
+			model = glm::translate(model, glm::vec3(0.0f, 0.05f, 0.0f));
+			model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+
+			glm::vec3 r = model * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+			//std::cout << r.x << " " << r.y << " " << r.z << "\n";
+
+
+			light.use();
+
+			std::string point;
+			point = "pointLights[" + std::to_string(i) + "].";
+
+			light.setVec3(point + "position", r);
+			light.setVec3(point + "lightCol", cols[0]);
+			light.setFloat(point + "constant", 1.0f);
+			light.setFloat(point + "linear", 0.7f);
+			light.setFloat(point + "quadratic", 1.80f);
+
+	
+
+			lamp.use();
+
+			lamp.setVec3("col", cols[0]);
+			lamp.setMat4("proj", proj);
+			lamp.setMat4("view", view);
+			lamp.setMat4("model", model);
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+
+
+		//point light  1
+
+
+
+
+
+		////point light  2
+		for (int i = 20; i < 40; i++)
+		{
+
+			float y = cos(currentTime*4 + i) + 1;
+
+			//std::cout << y << "\n";
+			if (y - 0.001 <= 0.0f && i == 20)
+			{
+				cols[1].x = (rand() % 255) / 255.0f;
+				cols[1].y = (rand() % 255) / 255.0f;
+				cols[1].z = (rand() % 255) / 255.0f;
+
+				
+			}
+
+
+			glm::vec3 color = glm::vec3(lightColorX, lightColorY, lightColorZ);
+
+			model = glm::mat4();
+			model = glm::rotate(model, glm::radians(360 / 20.0f * i), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::translate(model, glm::vec3(3.0f, y/2.0f, 0.0f));
+			model = glm::translate(model, glm::vec3(0.0f, 0.05f, 0.0f));
+			model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+
+			glm::vec3 r = model * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+			//std::cout << r.x << " " << r.y << " " << r.z << "\n";
+
+
+			light.use();
+
+			std::string point;
+			point = "pointLights[" + std::to_string(i) + "].";
+
+			light.setVec3(point + "position", r);
+			light.setVec3(point + "lightCol", cols[1]);
+			light.setFloat(point + "constant", 1.0f);
+			light.setFloat(point + "linear", 0.7f);
+			light.setFloat(point + "quadratic", 1.80f);
+
+
+
+			lamp.use();
+
+			lamp.setVec3("col", cols[1]);
+			lamp.setMat4("proj", proj);
+			lamp.setMat4("view", view);
+			lamp.setMat4("model", model);
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+		////point light  2
+
+
+		////point light  3
+		for (int i = 40; i < 50; i++)
+		{
+
+			float y = cos(currentTime * 5 + i) + 1;
+
+			//std::cout << y << "\n";
+			if (y - 0.001 <= 0.0f && i == 40)
+			{
+				cols[2].x = (rand() % 255) / 255.0f;
+				cols[2].y = (rand() % 255) / 255.0f;
+				cols[2].z = (rand() % 255) / 255.0f;
+
+
+			}
+
+
+			glm::vec3 color = glm::vec3(lightColorX, lightColorY, lightColorZ);
+
+			model = glm::mat4();
+			model = glm::rotate(model, glm::radians(360 / 10.0f * i), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::translate(model, glm::vec3(1.0f, y, 0.0f));
+			model = glm::translate(model, glm::vec3(0.0f, 0.05f, 0.0f));
+			model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+
+			glm::vec3 r = model * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+			//std::cout << r.x << " " << r.y << " " << r.z << "\n";
+
+
+			light.use();
+
+			std::string point;
+			point = "pointLights[" + std::to_string(i) + "].";
+
+			light.setVec3(point + "position", r);
+			light.setVec3(point + "lightCol", cols[2]);
+			light.setFloat(point + "constant", 1.0f);
+			light.setFloat(point + "linear", 0.7f);
+			light.setFloat(point + "quadratic", 1.80f);
+
+
+
+			lamp.use();
+
+			lamp.setVec3("col", cols[2]);
+			lamp.setMat4("proj", proj);
+			lamp.setMat4("view", view);
+			lamp.setMat4("model", model);
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+		////point light  3
+
+
+		//plane
+		light.use();
 		model = glm::mat4();
 		model = glm::scale(model, glm::vec3(300.0f, 0.1f, 300.0f));
 		model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
@@ -194,45 +396,13 @@ int main()
 		light.setMat4("view", view);
 		light.setMat4("model", model);
 		light.setVec3("viewPos", cam.pos);
-		
+
 		light.setVec3("material.matColor", glm::vec3(0.1f));
 		light.setFloat("material.shininess", 32.0f);
 
-
-		light.setVec3("dirLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
-		light.setVec3("dirLight.lightCol", glm::vec3(0.1f));
-
-
-		float plY = sin(currentTime) + 1;
-
-		light.setVec3("pointLights[0].position", glm::vec3(0.0f, plY + 0.05f, 0.0f));
-		light.setVec3("pointLights[0].lightCol", glm::vec3(1.0f, 0.0f, 0.0f));
-		light.setFloat("pointLights[0].constant", 1.0f);
-		light.setFloat("pointLights[0].linear", 0.22f);
-		light.setFloat("pointLights[0].quadratic", 0.20f);
-
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-
-
-		//point light 
-
-
-		lamp.use();
-
-		model = glm::mat4();
-		model = glm::translate(model, glm::vec3(0.0f, plY, 0.0f));
-		model = glm::translate(model, glm::vec3(0.0f, 0.05f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-
-
-		lamp.setVec3("col", glm::vec3(1.0f, 0.0f, 0.0f));
-		lamp.setMat4("proj", proj);
-		lamp.setMat4("view", view);
-		lamp.setMat4("model", model);
-
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
+		//plane
 
 
 		glfwSwapBuffers(window);
@@ -242,6 +412,7 @@ int main()
 
 
 	glDeleteVertexArrays(1, &pVAO);
+	glDeleteVertexArrays(1, &lVAO);
 	glDeleteBuffers(1, &VBO);
 	glfwTerminate();
 
