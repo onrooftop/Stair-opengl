@@ -53,15 +53,4 @@
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\mypic\container2.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="..\..\mypic\container2_specular.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="..\..\mypic\tile.jpg">
-      <Filter>Source Files</Filter>
-    </Image>
-  </ItemGroup>
 </Project>
