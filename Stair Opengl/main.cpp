@@ -84,46 +84,46 @@ int main()
 	float vertices_data[] = {
 		// positions          // normals           // texture coords
 		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  100.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  100.0f,  100.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  100.0f,  100.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  100.0f,
 		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
 
 		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-		0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  100.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  100.0f,  100.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  100.0f,  100.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  100.0f,
 		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
 
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  100.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  100.0f,  100.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  100.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  100.0f,
 		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  100.0f,  0.0f,
 
-		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  10.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  10.0f,  10.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  10.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  10.0f,
 		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  10.0f,  0.0f,
 
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  100.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  100.0f,  100.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  100.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  100.0f,  0.0f,
 		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  100.0f,
 
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  100.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  100.0f,  100.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  100.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  100.0f,  0.0f,
 		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  100.0f
 	};
 
 	Shader light("vshader.vert", "fshader.frag");
@@ -155,6 +155,15 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
+
+
+
+
+	unsigned int marbleTileTexture;
+
+
+
+	marbleTileTexture = load_texture("E:\\marbletile.jpg");
 
 
 
@@ -252,9 +261,10 @@ int main()
 
 			light.setVec3(point + "position", r);
 			light.setVec3(point + "lightCol", cols[0]);
+			light.setFloat(point + "intensity", 0.7f);
 			light.setFloat(point + "constant", 1.0f);
-			light.setFloat(point + "linear", 0.7f);
-			light.setFloat(point + "quadratic", 1.80f);
+			light.setFloat(point + "linear", 3.0f);
+			light.setFloat(point + "quadratic", 8.0f);
 
 	
 
@@ -312,9 +322,10 @@ int main()
 
 			light.setVec3(point + "position", r);
 			light.setVec3(point + "lightCol", cols[1]);
+			light.setFloat(point + "intensity", 0.7f);
 			light.setFloat(point + "constant", 1.0f);
-			light.setFloat(point + "linear", 0.7f);
-			light.setFloat(point + "quadratic", 1.80f);
+			light.setFloat(point + "linear", 3.0f);
+			light.setFloat(point + "quadratic", 8.0f);
 
 
 
@@ -367,9 +378,11 @@ int main()
 
 			light.setVec3(point + "position", r);
 			light.setVec3(point + "lightCol", cols[2]);
+			light.setFloat(point + "intensity", 0.7f);
+
 			light.setFloat(point + "constant", 1.0f);
-			light.setFloat(point + "linear", 0.7f);
-			light.setFloat(point + "quadratic", 1.80f);
+			light.setFloat(point + "linear", 3.0f);
+			light.setFloat(point + "quadratic", 8.0f);
 
 
 
@@ -385,24 +398,24 @@ int main()
 		////point light  3
 
 
-		//plane
+		//
 		light.use();
 		model = glm::mat4();
-		model = glm::scale(model, glm::vec3(300.0f, 0.1f, 300.0f));
+		model = glm::scale(model, glm::vec3(280.0f, 0.1f, 280.0f));
 		model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
 
+		glActiveTexture(GL_TEXTURE0);
 
 		light.setMat4("proj", proj);
 		light.setMat4("view", view);
 		light.setMat4("model", model);
 		light.setVec3("viewPos", cam.pos);
 
-		light.setVec3("material.matColor", glm::vec3(0.1f));
 		light.setFloat("material.shininess", 32.0f);
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		//plane
+		//
 
 
 		glfwSwapBuffers(window);
