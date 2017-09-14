@@ -47,7 +47,7 @@ public:
 	bool fly;
 
 
-	Camera(glm::vec3 _pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 _up = glm::vec3(0.0f, 1.0f, 0.0f), float _yaw = YAW, float _pitch = PITCH, bool fly = false);
+	Camera(glm::vec3 _pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 _up = glm::vec3(0.0f, 1.0f, 0.0f), float _yaw = YAW, float _pitch = PITCH, bool _fly = false);
 	void keyboard_move(Camera_Movement move, float deltaTime);
 	void mouse_move(float xoffset, float yoffset);
 	void mouse_scroll(float yoffset);

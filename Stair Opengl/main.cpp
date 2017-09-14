@@ -111,6 +111,17 @@ int main()
 
 		shader.use();
 
+		shader.setVec3("pointLights[0].position", glm::vec3(0.0f, 5.0f, 3.0f));
+		shader.setVec3("viewPos", cam.pos);
+
+		// light properties
+		shader.setVec3("pointLights[0].ambient", glm::vec3(0.2f));
+		shader.setVec3("pointLights[0].diffuse", glm::vec3(0.5f));
+		shader.setVec3("pointLights[0].specular", glm::vec3(1.0f));
+		shader.setFloat("pointLights[0].constant", 1.0f);
+		shader.setFloat("pointLights[0].linear", 0.09f);
+		shader.setFloat("pointLights[0].quadratic", 0.032f);
+
 		shader.setMat4("proj", proj);
 		shader.setMat4("view", view);
 
