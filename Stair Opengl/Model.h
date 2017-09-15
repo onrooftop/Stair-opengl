@@ -49,43 +49,72 @@ public:
 		//::cout << root;
 	}
 
+	void RotArm(int mode, float dg)
+	{
+		nodes[mode]->mTransformation = nodes[mode]->mTransformation.RotationX(dg, nodes[mode]->mTransformation);
+	}
+
+
+
 	// draws the model, and thus all its meshes
-	void Draw(Shader shader, glm::mat4 model)
+	void Draw(Shader shader, glm::mat4 model,int mode, float roll, float pitch)
 	{
 
 
 
+		//nodes[mode]->mTransformation.RotationX(dg, nodes[mode]->mTransformation);
+		
 		std::vector<glm::mat4> model_temp;
+		std::vector<glm::mat4> tran_temp;
 
 		for (unsigned int i = 0; i < meshes.size(); i++)
 		{
 			aiNode *node = nodes[i];
 
-			aiMatrix4x4 m = rootNode->mTransformation;
-			glm::mat4 tran = glm::fmat4x4(m.a1, m.b1, m.c1, m.d1,
-				m.a2, m.b2, m.c2, m.d2,
-				m.a3, m.b3, m.c3, m.d3,
-				m.a4, m.b4, m.c4, m.d4);
-
 			
+			glm::mat4 tran;
 
 			model_temp.clear();
+			tran_temp.clear();
+			aiMatrix4x4 m = nodes[0]->mTransformation;
+			model_temp.push_back(glm::fmat4x4(m.a1, m.b1, m.c1, m.d1,
+				m.a2, m.b2, m.c2, m.d2,
+				m.a3, m.b3, m.c3, m.d3,
+				m.a4, m.b4, m.c4, m.d4));
 
 			
-			while (rootNode != node)
+			while (nodes[0] != node)
 			{
 				aiMatrix4x4 m = node->mTransformation;
-				model_temp.push_back(glm::fmat4x4(m.a1, m.b1, m.c1, m.d1,
+
+				glm::mat4 mat_temp = glm::fmat4x4(m.a1, m.b1, m.c1, m.d1,
 					m.a2, m.b2, m.c2, m.d2,
 					m.a3, m.b3, m.c3, m.d3,
-					m.a4, m.b4, m.c4, m.d4));
+					m.a4, m.b4, m.c4, m.d4);
 
-				node = node->mParent;
+				tran_temp.push_back(mat_temp);
+				node = node->mParent;// 0 [2 1]
 			}
 
-			for (unsigned int j = 0; j < model_temp.size(); j++)
+			for (int j = tran_temp.size() - 1; j >= 0; j--)
 			{
-				tran = tran * model_temp[j];
+				model_temp.push_back(tran_temp[j]);
+			}
+
+			glm::mat4 mat;
+
+			if (mode == i)
+			{
+				
+				rolls[mode] = glm::rotate(mat, glm::radians(roll * 30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				rolls[mode] = glm::rotate(rolls[mode], glm::radians(pitch * 30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			}
+
+
+			
+			for (int j = 0; j < model_temp.size(); j++)
+			{
+				tran = tran * (model_temp[j] * rolls[j]) ;
 			}
 
 			tran = model * tran;
@@ -112,15 +141,19 @@ private:
 	std::vector<aiNode *> nodes;
 	const aiNode  *rootNode;;
 
+
+	std::vector<glm::mat4> rolls;
+
 	/*  Functions   */
 	// loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
 	void loadModel(string const &path)
 	{
 		// read file via ASSIMP
-
+		
 		// check for errors
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 		{
+
 			cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << endl;
 			return;
 		}
@@ -151,6 +184,7 @@ private:
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 			meshes.push_back(processMesh(mesh, scene));
 			nodes.push_back(node);
+			rolls.push_back(glm::mat4());
 			//printMat4(node->mTransformation);
 
 		}

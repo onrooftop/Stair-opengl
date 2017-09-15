@@ -39,6 +39,13 @@ bool toggleFlashlight = true;
 
 Camera cam(glm::vec3(0.0f, feet + 0.3f, 2.0f));
 
+float rolls[3] = {0.0f, 0.0f, 0.0f};
+float pitches[3] = { 0.0f, 0.0f, 0.0f };
+
+
+unsigned int mode = 0;
+
+
 
 int main()
 {
@@ -83,7 +90,7 @@ int main()
 	Model *ourModel = new Model("D:\\Opengl\\Stair Opengl\\Model\\box.fbx");
 
 	glEnable(GL_DEPTH_TEST);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 
@@ -131,7 +138,9 @@ int main()
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
 		//shader.setMat4("model", model);
 
-		ourModel->Draw(shader, model);
+		//ourModel->RotArm(mode, roll);
+
+		ourModel->Draw(shader, model, mode, rolls[mode], pitches[mode]);
 
 
 
@@ -174,6 +183,48 @@ void processInput(GLFWwindow *window)
 	}
 		
 
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+	{
+
+		mode = 0;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+	{
+
+		mode = 1;
+
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+	{
+
+		mode = 2;
+
+	}
+
+
+
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	{
+		rolls[mode] += 0.45*deltaTime;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	{
+		rolls[mode] -= 0.45 *deltaTime;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+	{
+		pitches[mode] += 0.45*deltaTime;
+	}
+
+
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	{
+		pitches[mode] -= 0.45*deltaTime;
+	}
 	
 
 }

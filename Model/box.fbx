@@ -11,10 +11,10 @@ FBXHeaderExtension:  {
 		Year: 2017
 		Month: 9
 		Day: 16
-		Hour: 2
-		Minute: 30
-		Second: 1
-		Millisecond: 640
+		Hour: 3
+		Minute: 57
+		Second: 36
+		Millisecond: 459
 	}
 	Creator: "FBX SDK/FBX Plugins version 2017.0.1"
 	SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
@@ -36,13 +36,13 @@ FBXHeaderExtension:  {
 			P: "Original|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "Original|ApplicationName", "KString", "", "", "Maya"
 			P: "Original|ApplicationVersion", "KString", "", "", "2017"
-			P: "Original|DateTime_GMT", "DateTime", "", "", "15/09/2017 19:30:01.638"
+			P: "Original|DateTime_GMT", "DateTime", "", "", "15/09/2017 20:57:36.457"
 			P: "Original|FileName", "KString", "", "", "D:\Opengl\Stair Opengl\Model\box.fbx"
 			P: "LastSaved", "Compound", "", ""
 			P: "LastSaved|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "LastSaved|ApplicationName", "KString", "", "", "Maya"
 			P: "LastSaved|ApplicationVersion", "KString", "", "", "2017"
-			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "15/09/2017 19:30:01.638"
+			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "15/09/2017 20:57:36.457"
 			P: "Original|ApplicationActiveProject", "KString", "", "", "D:\Opengl\Stair Opengl\Model"
 		}
 	}
@@ -78,7 +78,7 @@ GlobalSettings:  {
 
 Documents:  {
 	Count: 1
-	Document: 2321415666144, "", "Scene" {
+	Document: 2321426153024, "", "Scene" {
 		Properties70:  {
 			P: "SourceObject", "object", "", ""
 			P: "ActiveAnimStackName", "KString", "", "", "Take 001"
@@ -251,9 +251,9 @@ Definitions:  {
 ;------------------------------------------------------------------
 
 Objects:  {
-	Geometry: 2321419176576, "Geometry::", "Mesh" {
+	Geometry: 2321411818640, "Geometry::", "Mesh" {
 		Vertices: *24 {
-			a: -0.5,-1.5,0.5,0.5,-1.5,0.5,-0.5,1.5,0.5,0.5,1.5,0.5,-0.5,1.5,-0.5,0.5,1.5,-0.5,-0.5,-1.5,-0.5,0.5,-1.5,-0.5
+			a: -0.5,-2.93641304969788,0.5,0.5,-2.93641304969788,0.5,-0.5,0.063586950302124,0.5,0.5,0.063586950302124,0.5,-0.5,0.063586950302124,-0.5,0.5,0.063586950302124,-0.5,-0.5,-2.93641304969788,-0.5,0.5,-2.93641304969788,-0.5
 		} 
 		PolygonVertexIndex: *36 {
 			a: 2,0,-4,3,0,-2,3,5,-3,2,5,-5,6,4,-8,7,4,-6,1,0,-7,1,6,-8,7,5,-2,3,1,-6,2,6,-1,6,2,-5
@@ -311,9 +311,9 @@ Objects:  {
 			}
 		}
 	}
-	Geometry: 2321419174016, "Geometry::", "Mesh" {
+	Geometry: 2321411813008, "Geometry::", "Mesh" {
 		Vertices: *24 {
-			a: -0.349999994039536,-1.25,0.349999994039536,0.349999994039536,-1.25,0.349999994039536,-0.349999994039536,1.25,0.349999994039536,0.349999994039536,1.25,0.349999994039536,-0.349999994039536,1.25,-0.349999994039536,0.349999994039536,1.25,-0.349999994039536,-0.349999994039536,-1.25,-0.349999994039536,0.349999994039536,-1.25,-0.349999994039536
+			a: -0.349999994039536,-2.41218161582947,0.349999994039536,0.349999994039536,-2.41218161582947,0.349999994039536,-0.349999994039536,0.0878182649612427,0.349999994039536,0.349999994039536,0.0878182649612427,0.349999994039536,-0.349999994039536,0.0878182649612427,-0.349999994039536,0.349999994039536,0.0878182649612427,-0.349999994039536,-0.349999994039536,-2.41218161582947,-0.349999994039536,0.349999994039536,-2.41218161582947,-0.349999994039536
 		} 
 		PolygonVertexIndex: *36 {
 			a: 2,0,-4,3,0,-2,3,5,-3,2,5,-5,6,4,-8,7,4,-6,1,0,-7,1,6,-8,7,5,-2,3,1,-6,2,6,-1,6,2,-5
@@ -371,9 +371,9 @@ Objects:  {
 			}
 		}
 	}
-	Geometry: 2321419159680, "Geometry::", "Mesh" {
+	Geometry: 2321411819664, "Geometry::", "Mesh" {
 		Vertices: *24 {
-			a: -0.200000002980232,-1,0.200000002980232,0.200000002980232,-1,0.200000002980232,-0.200000002980232,1,0.200000002980232,0.200000002980232,1,0.200000002980232,-0.200000002980232,1,-0.200000002980232,0.200000002980232,1,-0.200000002980232,-0.200000002980232,-1,-0.200000002980232,0.200000002980232,-1,-0.200000002980232
+			a: -0.200000002980232,-1.92258083820343,0.200000002980232,0.200000002980232,-1.92258083820343,0.200000002980232,-0.200000002980232,0.077419102191925,0.200000002980232,0.200000002980232,0.077419102191925,0.200000002980232,-0.200000002980232,0.077419102191925,-0.200000002980232,0.200000002980232,0.077419102191925,-0.200000002980232,-0.200000002980232,-1.92258083820343,-0.200000002980232,0.200000002980232,-1.92258083820343,-0.200000002980232
 		} 
 		PolygonVertexIndex: *36 {
 			a: 2,0,-4,3,0,-2,3,5,-3,2,5,-5,6,4,-8,7,4,-6,1,0,-7,1,6,-8,7,5,-2,3,1,-6,2,6,-1,6,2,-5
@@ -431,46 +431,46 @@ Objects:  {
 			}
 		}
 	}
-	Model: 2321393611488, "Model::pCube1", "Mesh" {
+	Model: 2319427289184, "Model::pCube1", "Mesh" {
 		Version: 232
 		Properties70:  {
 			P: "RotationActive", "bool", "", "",1
 			P: "InheritType", "enum", "", "",1
 			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
 			P: "DefaultAttributeIndex", "int", "Integer", "",0
-			P: "Lcl Translation", "Lcl Translation", "", "A",0,5,0
+			P: "Lcl Translation", "Lcl Translation", "", "A",0,1.43641294977463,0
 			P: "currentUVSet", "KString", "", "U", "map1"
 		}
 		Shading: T
 		Culling: "CullingOff"
 	}
-	Model: 2321393643968, "Model::pCube2", "Mesh" {
+	Model: 2319427303104, "Model::pCube2", "Mesh" {
 		Version: 232
 		Properties70:  {
 			P: "RotationActive", "bool", "", "",1
 			P: "InheritType", "enum", "", "",1
 			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
 			P: "DefaultAttributeIndex", "int", "Integer", "",0
-			P: "Lcl Translation", "Lcl Translation", "", "A",0,-2.80102671650419,0
+			P: "Lcl Translation", "Lcl Translation", "", "A",0,-3.11758913971418,0
 			P: "currentUVSet", "KString", "", "U", "map1"
 		}
 		Shading: T
 		Culling: "CullingOff"
 	}
-	Model: 2321393627728, "Model::pCube3", "Mesh" {
+	Model: 2319427293824, "Model::pCube3", "Mesh" {
 		Version: 232
 		Properties70:  {
 			P: "RotationActive", "bool", "", "",1
 			P: "InheritType", "enum", "", "",1
 			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
 			P: "DefaultAttributeIndex", "int", "Integer", "",0
-			P: "Lcl Translation", "Lcl Translation", "", "A",0,-2.307645662759,0
+			P: "Lcl Translation", "Lcl Translation", "", "A",0,-2.54724648740286,0
 			P: "currentUVSet", "KString", "", "U", "map1"
 		}
 		Shading: T
 		Culling: "CullingOff"
 	}
-	Material: 2321345647808, "Material::lambert2", "" {
+	Material: 2321345540608, "Material::lambert2", "" {
 		Version: 102
 		ShadingModel: "lambert"
 		MultiLayer: 0
@@ -485,7 +485,7 @@ Objects:  {
 			P: "Opacity", "double", "Number", "",1
 		}
 	}
-	Material: 2321345653408, "Material::lambert1", "" {
+	Material: 2321345542608, "Material::lambert1", "" {
 		Version: 102
 		ShadingModel: "lambert"
 		MultiLayer: 0
@@ -500,6 +500,16 @@ Objects:  {
 			P: "Opacity", "double", "Number", "",1
 		}
 	}
+	AnimationStack: 2321423267680, "AnimStack::Take 001", "" {
+		Properties70:  {
+			P: "LocalStart", "KTime", "Time", "",1924423250
+			P: "LocalStop", "KTime", "Time", "",230930790000
+			P: "ReferenceStart", "KTime", "Time", "",1924423250
+			P: "ReferenceStop", "KTime", "Time", "",230930790000
+		}
+	}
+	AnimationLayer: 2321266502288, "AnimLayer::BaseLayer", "" {
+	}
 }
 
 ; Object connections
@@ -508,32 +518,43 @@ Objects:  {
 Connections:  {
 	
 	;Model::pCube1, Model::RootNode
-	C: "OO",2321393611488,0
+	C: "OO",2319427289184,0
 	
 	;AnimLayer::BaseLayer, AnimStack::Take 001
-	C: "OO",2321350566880,2321390091584
+	C: "OO",2321266502288,2321423267680
 	
 	;Geometry::, Model::pCube1
-	C: "OO",2321419176576,2321393611488
+	C: "OO",2321411818640,2319427289184
 	
 	;Material::lambert2, Model::pCube1
-	C: "OO",2321345647808,2321393611488
+	C: "OO",2321345540608,2319427289184
 	
 	;Model::pCube2, Model::pCube1
-	C: "OO",2321393643968,2321393611488
+	C: "OO",2319427303104,2319427289184
 	
 	;Material::lambert1, Model::pCube2
-	C: "OO",2321345653408,2321393643968
+	C: "OO",2321345542608,2319427303104
 	
 	;Geometry::, Model::pCube2
-	C: "OO",2321419174016,2321393643968
+	C: "OO",2321411813008,2319427303104
 	
 	;Model::pCube3, Model::pCube2
-	C: "OO",2321393627728,2321393643968
+	C: "OO",2319427293824,2319427303104
 	
 	;Material::lambert1, Model::pCube3
-	C: "OO",2321345653408,2321393627728
+	C: "OO",2321345542608,2319427293824
 	
 	;Geometry::, Model::pCube3
-	C: "OO",2321419159680,2321393627728
+	C: "OO",2321411819664,2319427293824
+}
+;Takes section
+;----------------------------------------------------
+
+Takes:  {
+	Current: "Take 001"
+	Take: "Take 001" {
+		FileName: "Take_001.tak"
+		LocalTime: 1924423250,230930790000
+		ReferenceTime: 1924423250,230930790000
+	}
 }
