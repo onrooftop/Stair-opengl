@@ -96,6 +96,9 @@ public:
 
 	}
 
+
+	
+
 private:
 	/*  Render data  */
 	unsigned int VBO, EBO;

@@ -75,11 +75,12 @@ int main()
 	glm::mat4 proj;
 	glm::mat4 view;
 
-	Shader shader("model_loading.vert", "model_loading.frag");
+	Shader shader("v.vert", "f.frag");
 	Shader lamb("vshaderNoLight.vert", "fshaderNoLight.frag");
 
-
-	Model ourModel("D:\\Opengl\\Stair Opengl\\Model\\nanosuit\\nanosuit.obj");
+	
+	//Model ourModel("D:\\Opengl\\Stair Opengl\\Model\\nanosuit\\nanosuit.obj");
+	Model *ourModel = new Model("D:\\Opengl\\Stair Opengl\\Model\\box.fbx");
 
 	glEnable(GL_DEPTH_TEST);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -126,11 +127,11 @@ int main()
 		shader.setMat4("view", view);
 
 		glm::mat4 model;
-		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
+		//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
-		shader.setMat4("model", model);
+		//shader.setMat4("model", model);
 
-		ourModel.Draw(shader);
+		ourModel->Draw(shader, model);
 
 
 

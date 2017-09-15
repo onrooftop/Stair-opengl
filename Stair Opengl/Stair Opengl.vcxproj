@@ -132,10 +132,12 @@
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="f.frag" />
     <None Include="fshader.frag" />
     <None Include="fshaderNoLight.frag" />
     <None Include="model_loading.frag" />
     <None Include="model_loading.vert" />
+    <None Include="v.vert" />
     <None Include="vshader.vert" />
     <None Include="vshaderNoLight.vert" />
   </ItemGroup>

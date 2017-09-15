@@ -70,5 +70,11 @@
     <None Include="model_loading.frag">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="v.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="f.frag">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
