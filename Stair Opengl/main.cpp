@@ -37,7 +37,7 @@ bool canmove = true;
 bool firstmouse = true;
 bool toggleFlashlight = true;
 
-Camera cam(glm::vec3(0.0f, feet + 0.3f, 2.0f));
+Camera cam(glm::vec3(0.0f, 0.0f, 5.0f));
 
 float rolls[3] = {0.0f, 0.0f, 0.0f};
 float pitches[3] = { 0.0f, 0.0f, 0.0f };
