@@ -94,7 +94,7 @@ int main()
 
 	
 	//Model ourModel("D:\\Opengl\\Stair Opengl\\Model\\nanosuit\\nanosuit.obj");
-	Model *ourModel = new Model("D:\\Opengl\\Stair Opengl\\Model\\Humanoid_robot.fbx");
+	Model *ourModel = new Model("D:\\Opengl\\Stair Opengl\\Model\\Humanoid_robot2.fbx");
 
 	glEnable(GL_DEPTH_TEST);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
