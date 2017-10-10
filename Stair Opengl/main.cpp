@@ -37,13 +37,20 @@ bool canmove = true;
 bool firstmouse = true;
 bool toggleFlashlight = true;
 
-Camera cam(glm::vec3(0.0f, 0.0f, 5.0f));
+int press_up = 0;
+int press_left = 0;
+
+Camera cam(glm::vec3(0.0f, 0.0f, 1.5f));
 
 float rolls[3] = {0.0f, 0.0f, 0.0f};
 float pitches[3] = { 0.0f, 0.0f, 0.0f };
 
 
 unsigned int mode = 0;
+std::string part = "Chest";
+
+
+
 
 
 
@@ -140,7 +147,7 @@ int main()
 
 		//ourModel->RotArm(mode, roll);
 
-		ourModel->Draw(shader, model, mode, rolls[mode], pitches[mode]);
+		ourModel->Draw(shader, model, mode, part, press_up, press_left);
 
 
 
@@ -162,70 +169,98 @@ void processInput(GLFWwindow *window)
 		glfwSetWindowShouldClose(window, true);
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		cam.keyboard_move(FORWARD, deltaTime);
+	//if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	//	cam.keyboard_move(FORWARD, deltaTime);
 
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		cam.keyboard_move(BACKWARD, deltaTime);
+	//if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	//	cam.keyboard_move(BACKWARD, deltaTime);
 
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		cam.keyboard_move(LEFT, deltaTime);
+	//if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	//	cam.keyboard_move(LEFT, deltaTime);
 
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		cam.keyboard_move(RIGHT, deltaTime);
+	//if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	//	cam.keyboard_move(RIGHT, deltaTime);
 
-	if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS)
-		toggleFlashlight = true;
+	//if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS)
+	//	toggleFlashlight = true;
 
-	if (glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS)
-	{
-		toggleFlashlight = false;
-	}
+	//if (glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS)
+	//{
+	//	toggleFlashlight = false;
+	//}
 		
 
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 	{
-
 		mode = 0;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
 	{
-
 		mode = 1;
-
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
 	{
-
 		mode = 2;
-
 	}
 
 
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
-		rolls[mode] += 10*deltaTime;
-		std::cout << rolls[mode] << "\n";
+		press_up = 1;
 	}
+
 
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
-		rolls[mode] -= 0.7 *deltaTime;
+		press_up = -1;
 	}
+
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_RELEASE)
+	{
+		press_up = 0;
+	}
+
 
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
-		pitches[mode] += 0.7*deltaTime;
+		press_left = 1;
 	}
 
 
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 	{
-		pitches[mode] -= 0.7*deltaTime;
+		press_left = -1;
 	}
+
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_RELEASE)
+	{
+		press_left = 0;
+	}
+
+
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+		part = CHEST;
+
+	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+		part = HEAD;
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		part = ROOT_LEFT_HAND;
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		part = ROOT_RIGHT_HAND;
+
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+		part = ROOT_LEFT_LEG;
+
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		part = ROOT_RIGHT_LEG;
+
+
+
 	
 
 }

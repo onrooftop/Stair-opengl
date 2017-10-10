@@ -26,9 +26,20 @@ using namespace std;
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
 void printMat4(aiMatrix4x4 mat);
 
+
+const std::string CHEST = "Chest";
+const std::string HEAD = "Head";
+const std::string ROOT_RIGHT_HAND = "Hand_Right_3";
+const std::string ROOT_LEFT_HAND = "Hand_Left_3";
+const std::string ROOT_RIGHT_LEG = "Leg_Right_3";
+const std::string ROOT_LEFT_LEG = "Leg_Left_3";
+
 class Model
 {
 public:
+
+
+
 
 	/*  Model Data */
 	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
@@ -57,10 +68,35 @@ public:
 
 
 	// draws the model, and thus all its meshes
-	void Draw(Shader shader, glm::mat4 model,int mode, float roll, float pitch)
+	void Draw(Shader shader, glm::mat4 model,int mode, const std::string part, int pressUp, int pressLeft)
 	{
-		mode = root_left_leg_id+2;
-		//nodes[mode]->mTransformation.RotationX(dg, nodes[mode]->mTransformation);
+
+		if (CHEST.compare(part) == 0)
+		{
+			mode = chest_id;
+		}
+		else if (HEAD.compare(part) == 0)
+		{
+			mode = head_id;
+		}
+		else if (ROOT_LEFT_HAND.compare(part) == 0)
+		{
+			mode = root_left_hand_id + mode;
+		}
+		else if (ROOT_RIGHT_HAND.compare(part) == 0)
+		{
+			mode = root_right_hand_id + mode;
+		}
+		else if (ROOT_LEFT_LEG.compare(part) == 0)
+		{
+			mode = root_left_leg_id + mode;
+		}
+		else if (ROOT_RIGHT_LEG.compare(part) == 0)
+		{
+			mode = root_right_leg_id + mode;
+		}
+		
+
 		
 		std::vector<glm::mat4> model_temp;
 		std::vector<glm::mat4> tran_temp;
@@ -113,13 +149,13 @@ public:
 
 			}
 
-			glm::mat4 mat;
+			
 
 			if (mode == i)
 			{
 				
-				rolls[mode] = glm::rotate(mat, glm::radians(roll * 30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				rolls[mode] = glm::rotate(rolls[mode], glm::radians(pitch * 30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+				rolls[mode] = glm::rotate(rolls[mode], glm::radians(pressUp * 5.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				rolls[mode] = glm::rotate(rolls[mode], glm::radians(pressLeft * 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 			}
 
@@ -157,12 +193,7 @@ private:
 
 
 
-	const std::string CHEST = "Chest";
-	const std::string HEAD = "Head";
-	const std::string ROOT_RIGHT_HAND = "Hand_Right_3";
-	const std::string ROOT_LEFT_HAND = "Hand_Left_3";
-	const std::string ROOT_RIGHT_LEG = "Leg_Right_3";
-	const std::string ROOT_LEFT_LEG = "Leg_Left_3";
+
 
 	int chest_id;
 	int head_id;
