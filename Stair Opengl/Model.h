@@ -59,13 +59,13 @@ public:
 	// draws the model, and thus all its meshes
 	void Draw(Shader shader, glm::mat4 model,int mode, float roll, float pitch)
 	{
-
-
-
+		mode = root_left_leg_id+2;
 		//nodes[mode]->mTransformation.RotationX(dg, nodes[mode]->mTransformation);
 		
 		std::vector<glm::mat4> model_temp;
 		std::vector<glm::mat4> tran_temp;
+		std::vector<int> rolls_index_temp;
+		std::vector<int> rolls_index;
 
 		for (unsigned int i = 0; i < meshes.size(); i++)
 		{
@@ -76,15 +76,23 @@ public:
 
 			model_temp.clear();
 			tran_temp.clear();
+			rolls_index.clear();
+			rolls_index_temp.clear();
+
 			aiMatrix4x4 m = nodes[0]->mTransformation;
+
 			model_temp.push_back(glm::fmat4x4(m.a1, m.b1, m.c1, m.d1,
 				m.a2, m.b2, m.c2, m.d2,
 				m.a3, m.b3, m.c3, m.d3,
 				m.a4, m.b4, m.c4, m.d4));
+			rolls_index.push_back(0);
 
 			
 			while (nodes[0] != node)
 			{
+				std::vector<aiNode *>::iterator iter = std::find(nodes.begin(), nodes.end(), node);
+				int index = std::distance(nodes.begin(), iter);
+
 				aiMatrix4x4 m = node->mTransformation;
 
 				glm::mat4 mat_temp = glm::fmat4x4(m.a1, m.b1, m.c1, m.d1,
@@ -93,12 +101,16 @@ public:
 					m.a4, m.b4, m.c4, m.d4);
 
 				tran_temp.push_back(mat_temp);
+
+				rolls_index_temp.push_back(index);
 				node = node->mParent;// 0 [2 1]
 			}
 
 			for (int j = tran_temp.size() - 1; j >= 0; j--)
 			{
 				model_temp.push_back(tran_temp[j]);
+				rolls_index.push_back(rolls_index_temp[j]);
+
 			}
 
 			glm::mat4 mat;
@@ -108,13 +120,14 @@ public:
 				
 				rolls[mode] = glm::rotate(mat, glm::radians(roll * 30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				rolls[mode] = glm::rotate(rolls[mode], glm::radians(pitch * 30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
 			}
 
 
 			
 			for (int j = 0; j < model_temp.size(); j++)
 			{
-				tran = tran * (model_temp[j] * rolls[j]) ;
+				tran = tran * (model_temp[j] * rolls[rolls_index[j]]) ;
 			}
 
 			tran = model * tran;
@@ -139,7 +152,27 @@ private:
 	Assimp::Importer importer;
 
 	std::vector<aiNode *> nodes;
-	const aiNode  *rootNode;;
+	const aiNode  *rootNode;
+
+
+
+
+	const std::string CHEST = "Chest";
+	const std::string HEAD = "Head";
+	const std::string ROOT_RIGHT_HAND = "Hand_Right_3";
+	const std::string ROOT_LEFT_HAND = "Hand_Left_3";
+	const std::string ROOT_RIGHT_LEG = "Leg_Right_3";
+	const std::string ROOT_LEFT_LEG = "Leg_Left_3";
+
+	int chest_id;
+	int head_id;
+	int root_right_hand_id;
+	int root_left_hand_id;
+	int root_right_leg_id;
+	int root_left_leg_id;
+
+
+
 
 
 	std::vector<glm::mat4> rolls;
@@ -182,9 +215,52 @@ private:
 			// the node object only contains indices to index the actual objects in the scene. 
 			// the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+
+
+
 			meshes.push_back(processMesh(mesh, scene));
 			nodes.push_back(node);
 			rolls.push_back(glm::mat4());
+			int id;
+
+			if (CHEST.compare(node->mName.C_Str()) == 0)
+			{
+				//std::cout << node->mName.C_Str() << "\n";
+				id = rolls.size() - 1;
+				chest_id = id;
+			}
+			else if (HEAD.compare(node->mName.C_Str()) == 0)
+			{
+				//std::cout << node->mName.C_Str() << "\n";
+				id = rolls.size() - 1;
+				head_id = id;
+			}
+			else if (ROOT_LEFT_HAND.compare(node->mName.C_Str()) == 0)
+			{
+				//std::cout << node->mName.C_Str() << "\n";
+				id = rolls.size() - 1;
+				root_left_hand_id = id;
+			}
+			else if (ROOT_RIGHT_HAND.compare(node->mName.C_Str()) == 0)
+			{
+				//std::cout << node->mName.C_Str() << "\n";
+				id = rolls.size() - 1;
+				root_right_hand_id = id;
+			}
+			else if (ROOT_LEFT_LEG.compare(node->mName.C_Str()) == 0)
+			{
+				//std::cout << node->mName.C_Str() << "\n";
+				id = rolls.size() - 1;
+				root_left_leg_id = id;
+			}
+			else if (ROOT_RIGHT_LEG.compare(node->mName.C_Str()) == 0)
+			{
+				//std::cout << node->mName.C_Str() << "\n";
+				id = rolls.size() - 1;
+				root_right_leg_id = id;
+			}
+
+			
 			//printMat4(node->mTransformation);
 
 		}

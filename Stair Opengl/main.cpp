@@ -87,7 +87,7 @@ int main()
 
 	
 	//Model ourModel("D:\\Opengl\\Stair Opengl\\Model\\nanosuit\\nanosuit.obj");
-	Model *ourModel = new Model("D:\\Opengl\\Stair Opengl\\Model\\box.fbx");
+	Model *ourModel = new Model("D:\\Opengl\\Stair Opengl\\Model\\Humanoid_robot.fbx");
 
 	glEnable(GL_DEPTH_TEST);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -207,23 +207,24 @@ void processInput(GLFWwindow *window)
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
-		rolls[mode] += 0.45*deltaTime;
+		rolls[mode] += 10*deltaTime;
+		std::cout << rolls[mode] << "\n";
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
-		rolls[mode] -= 0.45 *deltaTime;
+		rolls[mode] -= 0.7 *deltaTime;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
-		pitches[mode] += 0.45*deltaTime;
+		pitches[mode] += 0.7*deltaTime;
 	}
 
 
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 	{
-		pitches[mode] -= 0.45*deltaTime;
+		pitches[mode] -= 0.7*deltaTime;
 	}
 	
 
