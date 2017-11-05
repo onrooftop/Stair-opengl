@@ -154,6 +154,21 @@ void processInput(GLFWwindow *window)
 		glfwSetWindowShouldClose(window, true);
 	}
 
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		cam.keyboard_move(FORWARD, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		cam.keyboard_move(BACKWARD, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		cam.keyboard_move(LEFT, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		cam.keyboard_move(RIGHT, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS)
+		toggleFlashlight = true;
+
 
 }
 
