@@ -11,8 +11,6 @@
 #include "Model.h"
 
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 
 
@@ -90,7 +88,7 @@ int main()
 	glm::mat4 view;
 
 	Shader shader("model_loading.vert", "model_loading.frag");
-	Shader lamb("vshaderNoLight.vert", "fshaderNoLight.frag");
+	//Shader lamb("vshaderNoLight.vert", "fshaderNoLight.frag");
 
 	
 	Model ourModel("D:\\Opengl\\Stair Opengl\\Model\\nanosuit\\nanosuit.obj");
@@ -125,7 +123,6 @@ int main()
 
 
 		shader.use();
-		shader.setVec3("viewPos", cam.pos);
 		shader.setMat4("projection", proj);
 		shader.setMat4("view", view);
 
@@ -157,79 +154,6 @@ void processInput(GLFWwindow *window)
 		glfwSetWindowShouldClose(window, true);
 	}
 
-	//if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-	//	cam.keyboard_move(FORWARD, deltaTime);
-
-	//if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-	//	cam.keyboard_move(BACKWARD, deltaTime);
-
-	//if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-	//	cam.keyboard_move(LEFT, deltaTime);
-
-	//if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-	//	cam.keyboard_move(RIGHT, deltaTime);
-
-	//if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS)
-	//	toggleFlashlight = true;
-
-	//if (glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS)
-	//{
-	//	toggleFlashlight = false;
-	//}
-		
-
-	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-	{
-		mode = 0;
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
-	{
-		mode = 1;
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
-	{
-		mode = 2;
-	}
-
-
-
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-	{
-		press_up = 1;
-	}
-
-
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-	{
-		press_up = -1;
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_RELEASE)
-	{
-		press_up = 0;
-	}
-
-
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-	{
-		press_left = 1;
-	}
-
-
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-	{
-		press_left = -1;
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_RELEASE)
-	{
-		press_left = 0;
-	}
-
-
-	
 
 }
 
