@@ -20,6 +20,7 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos);
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
 
 unsigned int loadTexture(char const * path);
+unsigned int loadTextureLut(char const * path);
 
 const int WIDTH = 1280;
 const int HEIGHT = 720;
@@ -223,8 +224,10 @@ int main()
 
 	// load textures
 	// -------------
-	unsigned int cubeTexture = loadTexture("D:\\Opengl\\mypic\\container.jpg");
+	unsigned int cubeTexture = loadTexture("D:\\Opengl\\mypic\\container2.png");
 	unsigned int floorTexture = loadTexture("D:\\Opengl\\mypic\\tile.jpg");
+
+	unsigned int lut = loadTextureLut("C:\\Users\\Panupong\\Pictures\\LUT\\RGBTable16x1.png");
 
 	// shader configuration
 	// --------------------
@@ -234,6 +237,9 @@ int main()
 	screenShader.use();
 	screenShader.setInt("screenTexture", 0);
 
+	screenColorGradingShader.use();
+	screenColorGradingShader.setInt("screenTexture", 0);
+	screenColorGradingShader.setInt("lut", 1);
 	// framebuffer configuration
 	// -------------------------
 	unsigned int framebuffer;
@@ -276,7 +282,7 @@ int main()
 		glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
 
 								 // make sure we clear the framebuffer's content
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.use();
@@ -309,7 +315,7 @@ int main()
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
 								  // clear all relevant buffers
-		//glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		screenShader.use();
@@ -318,10 +324,14 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		screenColorGradingShader.use();
+		glEnable(GL_BLEND);
 		glBindVertexArray(quad2VAO);
-		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);	// use the color attachment texture as the texture of the quad plane
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, lut);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-
+		glDisable(GL_BLEND);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
@@ -420,8 +430,45 @@ unsigned int loadTexture(char const * path)
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		stbi_image_free(data);
+	}
+	else
+	{
+		std::cout << "Texture failed to load at path: " << path << std::endl;
+		stbi_image_free(data);
+	}
+
+	return textureID;
+}
+
+unsigned int loadTextureLut(char const * path)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+
+	int width, height, nrComponents;
+	unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
+	std::cout << height << "\n";
+	if (data)
+	{
+		GLenum format;
+		if (nrComponents == 1)
+			format = GL_RED;
+		else if (nrComponents == 3)
+			format = GL_RGB;
+		else if (nrComponents == 4)
+			format = GL_RGBA;
+
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);\
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	
 
 		stbi_image_free(data);
 	}

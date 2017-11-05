@@ -4,11 +4,22 @@ out vec4 FragColor;
 in vec2 TexCoords;
 
 uniform sampler2D screenTexture;
+uniform sampler2D lut;
 
 void main()
 {
-	FragColor = vec4(vec3(1.0 - texture(screenTexture, TexCoords)), 1.0);
+	vec3 col = texture2D(screenTexture, TexCoords).rgb;
 
-    //vec3 col = texture(screenTexture, TexCoords).rgb;
-    //FragColor = vec4(col, 1.0);
+
+	vec2 colInLut;
+
+	colInLut.x = (col.r * 15 + col.b * 240) / 256;;
+	colInLut.y = (1 - col.g);
+
+
+
+
+	vec3 color = texture2D(lut, colInLut).rgb;
+
+	FragColor = vec4(color.rgb, 1.0);
 } 
