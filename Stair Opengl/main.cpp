@@ -223,8 +223,8 @@ int main()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
 	// load textures
-	// -------------
-	unsigned int cubeTexture = loadTexture("D:\\Opengl\\mypic\\container2.png");
+	// -------------6
+	unsigned int cubeTexture = loadTexture("D:\\Opengl\\mypic\\container.jpg");
 	unsigned int floorTexture = loadTexture("D:\\Opengl\\mypic\\tile.jpg");
 
 	unsigned int lut = loadTextureLut("C:\\Users\\Panupong\\Pictures\\LUT\\RGBTable16x1.png");
@@ -282,7 +282,7 @@ int main()
 		glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
 
 								 // make sure we clear the framebuffer's content
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.use();
@@ -413,6 +413,7 @@ unsigned int loadTexture(char const * path)
 	glGenTextures(1, &textureID);
 
 	int width, height, nrComponents;
+	stbi_set_flip_vertically_on_load(true);
 	unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
 	if (data)
 	{
@@ -450,6 +451,7 @@ unsigned int loadTextureLut(char const * path)
 	glGenTextures(1, &textureID);
 
 	int width, height, nrComponents;
+	stbi_set_flip_vertically_on_load(true);
 	unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
 	std::cout << height << "\n";
 	if (data)
@@ -463,8 +465,10 @@ unsigned int loadTextureLut(char const * path)
 			format = GL_RGBA;
 
 		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);\
-
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
