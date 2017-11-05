@@ -76,5 +76,17 @@
     <None Include="f.frag">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="framebuffers_screen.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="framebuffers_screen.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="color_grading.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="color_grading.frag">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

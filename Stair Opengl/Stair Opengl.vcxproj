@@ -132,7 +132,11 @@
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="color_grading.frag" />
+    <None Include="color_grading.vert" />
     <None Include="f.frag" />
+    <None Include="framebuffers_screen.frag" />
+    <None Include="framebuffers_screen.vert" />
     <None Include="fshader.frag" />
     <None Include="fshaderNoLight.frag" />
     <None Include="model_loading.frag" />
