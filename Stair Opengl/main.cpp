@@ -20,7 +20,7 @@ void processInput(GLFWwindow *window);
 void framebuffer_size_callback(GLFWwindow *window, int w, int h);
 void mouse_callback(GLFWwindow *window, double xpos, double ypos);
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
-unsigned int load_texture(const char *path);
+
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
@@ -89,15 +89,15 @@ int main()
 	glm::mat4 proj;
 	glm::mat4 view;
 
-	Shader shader("v.vert", "f.frag");
+	Shader shader("model_loading.vert", "model_loading.frag");
 	Shader lamb("vshaderNoLight.vert", "fshaderNoLight.frag");
 
 	
-	//Model ourModel("D:\\Opengl\\Stair Opengl\\Model\\nanosuit\\nanosuit.obj");
-	Model *ourModel = new Model("D:\\Opengl\\Stair Opengl\\Model\\Humanoid_robot2.fbx");
+	Model ourModel("D:\\Opengl\\Stair Opengl\\Model\\nanosuit\\nanosuit.obj");
+	//Model *ourModel = new Model("D:\\Opengl\\Stair Opengl\\Model\\Farmhouse Maya 2016 Updated\\farmhouse_fbx.fbx");
 
 	glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 
@@ -125,29 +125,17 @@ int main()
 
 
 		shader.use();
-
-		shader.setVec3("pointLights[0].position", glm::vec3(0.0f, 5.0f, 3.0f));
 		shader.setVec3("viewPos", cam.pos);
-
-		// light properties
-		shader.setVec3("pointLights[0].ambient", glm::vec3(0.2f));
-		shader.setVec3("pointLights[0].diffuse", glm::vec3(0.5f));
-		shader.setVec3("pointLights[0].specular", glm::vec3(1.0f));
-		shader.setFloat("pointLights[0].constant", 1.0f);
-		shader.setFloat("pointLights[0].linear", 0.09f);
-		shader.setFloat("pointLights[0].quadratic", 0.032f);
-
-		shader.setMat4("proj", proj);
+		shader.setMat4("projection", proj);
 		shader.setMat4("view", view);
 
 		glm::mat4 model;
-		//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
+		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
-		//shader.setMat4("model", model);
+		shader.setMat4("model", model);
 
-		//ourModel->RotArm(mode, roll);
 
-		ourModel->Draw(shader, model, mode, part, press_up, press_left);
+		ourModel.Draw(shader);
 
 
 
@@ -239,26 +227,6 @@ void processInput(GLFWwindow *window)
 	{
 		press_left = 0;
 	}
-
-
-	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
-		part = CHEST;
-
-	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
-		part = HEAD;
-
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		part = ROOT_LEFT_HAND;
-
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		part = ROOT_RIGHT_HAND;
-
-	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-		part = ROOT_LEFT_LEG;
-
-	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		part = ROOT_RIGHT_LEG;
-
 
 
 	
