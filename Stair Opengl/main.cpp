@@ -224,10 +224,10 @@ int main()
 
 	// load textures
 	// -------------6
-	unsigned int cubeTexture = loadTexture("D:\\Opengl\\mypic\\container.jpg");
-	unsigned int floorTexture = loadTexture("D:\\Opengl\\mypic\\tile.jpg");
+	unsigned int cubeTexture = loadTexture("D:\\Opengl\\Stair Opengl\\Model\\pic\\container.jpg");
+	unsigned int floorTexture = loadTexture("D:\\Opengl\\Stair Opengl\\Model\\pic\\tile.jpg");
 
-	unsigned int lut = loadTextureLut("C:\\Users\\Panupong\\Pictures\\LUT\\RGBTable16x1.png");
+	unsigned int lut = loadTextureLut("D:\\Opengl\\Stair Opengl\\Model\\pic\\RGBTable16x1.png");
 
 	// shader configuration
 	// --------------------

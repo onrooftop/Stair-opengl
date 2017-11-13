@@ -5,38 +5,62 @@ in vec2 TexCoords;
 
 uniform sampler2D screenTexture;
 uniform sampler2D lut;
-const float offset = 1.0;  
+
 
 void main()
 {
-	 vec2 offsets[9] = vec2[](
-        vec2(-offset,  offset), // top-left
-       vec2( 0.0f,    offset), // top-center
-        vec2( offset,  offset), // top-right
-        vec2(-offset,  0.0f),   // center-left
-        vec2( 0.0f,    0.0f),   // center-center
-        vec2( offset,  0.0f),   // center-right
-        vec2(-offset, -offset), // bottom-left
-        vec2( 0.0f,   -offset), // bottom-center
-        vec2( offset, -offset)  // bottom-right    
-	);
-	vec3 color = vec3(0);
-	for(int i = 0; i < 9; i++)
-	{
-		vec3 col = texture2D(screenTexture, TexCoords + offsets[i]).rgb;
-		//vec3 col = texture2D(screenTexture, TexCoords).rgb;
+	
 
-		vec2 colInLut;
+	vec3 col = texture2D(screenTexture, TexCoords).rgb;
 
-		col *= 255.0;
+	vec2 colInLut;
 
-		colInLut.x = ((col.r * 15.0 / 255.0) + (col.b * 15.0 / 16.0)) / 255.0;
-		colInLut.y = (255.0 - col.g )/ 255.0;
+	float rCeil;
+	float rFloor;
+	float rDiff;
+	float rColorDiff;
 
-		color += texture2D(lut, colInLut.xy).rgb;
+	rCeil = (ceil(col.r * 16.0)) / 16.0;
+	rFloor = (floor(col.r * 16.0)) / 16.0;
+	rDiff = (col.r * 16.0) - floor(col.r * 16.0);
 
-	}
-	color /= 9.0;
+	float gCeil;
+	float gFloor;
+	float gDiff;
+	float gColorDiff;
 
-	FragColor = vec4(color.rgb, 1.0);
-} 
+	gCeil = (ceil(col.g * 16.0)) / 16.0;
+	gFloor = (floor(col.g * 16.0)) / 16.0;
+	gDiff = (col.g * 16) - floor(col.g * 16.0);
+
+	float bCeil;
+	float bFloor;
+	float bDiff;
+	float bColorDiff;
+
+	bCeil = (ceil(col.b * 16)) / 16.0;
+	bFloor = (floor(col.b * 16)) / 16.0;
+	bDiff = (col.b * 16) - floor(col.b * 16.0);
+
+
+	colInLut.x = (rFloor + ceil(bFloor * 15.0)) / 16.0;
+	colInLut.y = 1.0 - gFloor;
+	vec3 color_floor = texture2D(lut, colInLut).rgb;
+
+	colInLut.x = (rCeil + ceil(bCeil * 15.0)) / 16.0;
+	colInLut.y = 1.0 - gCeil;
+	vec3 color_ceil = texture2D(lut, colInLut).rgb;
+
+	rColorDiff = (color_ceil.r - color_floor.r) * rDiff;
+	gColorDiff = (color_ceil.g - color_floor.g) * gDiff;
+	bColorDiff = (color_ceil.b - color_floor.b) * bDiff;
+	
+	color_floor.r += rColorDiff;
+	color_floor.g += gColorDiff;
+	color_floor.b += bColorDiff;
+
+
+
+	FragColor = vec4(color_floor.r, color_floor.g, color_floor.b, 1.0);
+
+}
