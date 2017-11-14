@@ -56,11 +56,11 @@ void main()
 	bColorDiff = (color_ceil.b - color_floor.b) * bDiff;
 	
 	color_floor.r += rColorDiff;
-	color_floor.g += gColorDiff;
+	color_ceil.g += gColorDiff;
 	color_floor.b += bColorDiff;
 
 
 
-	FragColor = vec4(color_floor.r, color_floor.g, color_floor.b, 1.0);
+	FragColor = vec4(color_floor.r, color_ceil.g, color_floor.b, 1.0);
 
 }

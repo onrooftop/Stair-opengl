@@ -50,8 +50,13 @@ unsigned int mode = 0;
 std::string part = "Chest";
 
 
-
-
+unsigned int lut1;
+unsigned int lut2;
+unsigned int lut3;
+unsigned int lut4;
+unsigned int lut5;
+unsigned int lut0;
+unsigned int lut;
 
 
 int main()
@@ -227,8 +232,15 @@ int main()
 	unsigned int cubeTexture = loadTexture("D:\\Opengl\\Stair Opengl\\Model\\pic\\container.jpg");
 	unsigned int floorTexture = loadTexture("D:\\Opengl\\Stair Opengl\\Model\\pic\\tile.jpg");
 
-	unsigned int lut = loadTextureLut("D:\\Opengl\\Stair Opengl\\Model\\pic\\RGBTable16x1.png");
-
+	
+	lut1 = loadTextureLut("D:\\Opengl\\Stair Opengl\\Model\\pic\\LUT_StrongAmber.png");
+	lut2 = loadTextureLut("D:\\Opengl\\Stair Opengl\\Model\\pic\\LUT_CoolContrast.png");
+	lut3 = loadTextureLut("D:\\Opengl\\Stair Opengl\\Model\\pic\\LUT_Night2.png");
+	lut4 = loadTextureLut("D:\\Opengl\\Stair Opengl\\Model\\pic\\LUT_Filmic6.png");
+	lut5 = loadTextureLut("D:\\Opengl\\Stair Opengl\\Model\\pic\\LUT_Filmic4.png");
+	lut0 = loadTextureLut("D:\\Opengl\\Stair Opengl\\Model\\pic\\RGBTable16x1.png");
+	
+	lut = lut0;
 	// shader configuration
 	// --------------------
 	shader.use();
@@ -364,6 +376,25 @@ void processInput(GLFWwindow *window)
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		cam.keyboard_move(RIGHT, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
+		lut = lut0;
+
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+		lut = lut1;
+
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+		lut = lut2;
+
+	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+		lut = lut3;
+
+	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+		lut = lut4;
+
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+		lut = lut5;
+
 
 
 
